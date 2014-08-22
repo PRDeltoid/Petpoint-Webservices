@@ -1,10 +1,10 @@
-function pull_animals(type)
+function pull_animals(requestURL_In)
 {
     var x2js = new X2JS();
     var xmlHttp = null;
     
     //API request URL (locally hosted PHP file that pulls from Petango)
-    var requestURL = "http://www.sspca.org/wp-content/plugins/pp-webservices/pullanimals.php?type=" + type;
+    var requestURL = requestURL_In;
 
     xmlHttp = new XMLHttpRequest();
 
@@ -28,8 +28,8 @@ function pull_animals(type)
 
             //All animal detail formatting goes here.
             var animal_detail_formatted = "<div class='adoptable-animal'>" +
-                                        "<a href='/adopt/meet-adoptable-pets/viewanimal/?id=" + e.adoptableSearch["ID"] + "'><img class='animal-picture' src=" + e.adoptableSearch["Photo"] + "></a>" +
-                                        "<div class='animal-name'><a href='/adopt/meet-adoptable-pets/viewanimal/?id=" + e.adoptableSearch["ID"] + "'>" + e.adoptableSearch["Name"] + "</a></div>" +
+                                        "<a href='/adopt/meet-adoptable-pets/viewanimal/" + e.adoptableSearch["ID"] + "/'><img class='animal-picture' src=" + e.adoptableSearch["Photo"] + "></a>" +
+                                        "<div class='animal-name'><a href='/adopt/meet-adoptable-pets/viewanimal/" + e.adoptableSearch["ID"] + "/'>" + e.adoptableSearch["Name"] + "</a></div>" +
                                         "<p>" +animal_breed_formatted + "</p>" +
                                         "<p>" + e.adoptableSearch["Sex"] + "</p>" +
                                         "</div>";

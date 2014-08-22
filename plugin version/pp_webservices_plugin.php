@@ -8,32 +8,35 @@
     Author URI: taylorbritton.me
     License: GPL2
     */
-//include('pp_settings.php');
 include('pp_widget.php');
 
 function pp_setup_view_adoptable_page() {
+    $plugin_base = plugins_url(null, __FILE__);
+
+    $link_scripts = '<script type="text/javascript" src="' . $plugin_base . '/js/xml2json.min.js"></script>
+                <script type="text/javascript" src="' . $plugin_base . '/js/pull_animals.js"></script>
+                <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
+
     if (is_page_template('adoptable-cats-template.php')) {
-     echo '<script type="text/javascript" src="/wp-content/plugins/pp-webservices/js/xml2json.min.js"></script>
-            <script type="text/javascript" src="/wp-content/plugins/pp-webservices/js/pull_animals.js"></script>
-            <script type="text/javascript">
-                window.onload = pull_animals("cat")
-            </script>';
+        $requestURL = $plugin_base . '/pullanimals.php?type=cat';
+         echo $link_scripts . '<script type="text/javascript">
+                    window.onload = pull_animals("' . $requestURL . '")
+                </script>';
     } else if(is_page_template('adoptable-dogs-template.php')) {
-         echo '<script type="text/javascript" src="/wp-content/plugins/pp-webservices/js/xml2json.min.js"></script>
-                <script type="text/javascript" src="/wp-content/plugins/pp-webservices/js/pull_animals.js"></script>
-                <link rel="stylesheet" href="/wp-content/plugins/pp-webservices/css/pp-webservices-style.css">
-                <script type="text/javascript">
-                    window.onload = pull_animals("dog") 
+         $requestURL = $plugin_base . '/pullanimals.php?type=dog';
+         echo $link_scripts . '<script type="text/javascript">
+                    window.onload = pull_animals("' . $requestURL . '")
                 </script>';
     }
 }
 
 
 function pp_setup_view_animal_page_header() {
+    $plugin_base = plugins_url(null, __FILE__);
     if(is_page("View Animal"))  {
-        echo '<script type="text/javascript" src="/wp-content/plugins/pp-webservices/js/xml2json.min.js"></script>
-            <script type="text/javascript" src="/wp-content/plugins/pp-webservices/js/view_animal.js"></script>
-            <link rel="stylesheet" href="/wp-content/plugins/pp-webservices/css/pp-webservices-style.css">';
+        echo '<script type="text/javascript" src="' . $plugin_base . '/js/xml2json.min.js"></script>
+            <script type="text/javascript" src="' . $plugin_base . '/js/view_animal.js"></script>
+            <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
         $animalid = get_query_var('animalid');
         if(!empty($animalid) ) {
             $xml = file_get_contents("http://www.petango.com/webservices/wsadoption.asmx/AdoptableDetails?authkey=pxmj0427a7afmdgc0v6030lfurxt0ypw57dbs0dr4ga2g2j0a4&animalID=" . $animalid);
@@ -51,7 +54,7 @@ function pp_setup_view_animal_page_footer() {
 }
 
 function pp_add_rewrite() {
-    add_rewrite_rule('adopt/meet-adoptable-pets/viewanimal/([0-9]{1,})/?', 'index.php?page_id=12926&animalid=$matches[1]', 'top');
+    add_rewrite_rule('adopt/meet-adoptable-pets/viewanimal/([0-9]{1,})/?', 'index.php?page_id=10434&animalid=$matches[1]', 'top');
 }
 
 function pp_add_query_vars_filter( $vars ){
