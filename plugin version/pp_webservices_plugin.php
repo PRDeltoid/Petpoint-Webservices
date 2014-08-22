@@ -17,23 +17,23 @@ function pp_setup_view_adoptable_page() {
                 <script type="text/javascript" src="' . $plugin_base . '/js/pull_animals.js"></script>
                 <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
 
-    if (is_page_template('adoptable-cats-template.php')) {
+    if (is_page(url_to_postid(get_option('view_cats_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=cat';
          echo $link_scripts . '<script type="text/javascript">
                     window.onload = pull_animals("' . $requestURL . '")
                 </script>';
-    } else if(is_page_template('adoptable-dogs-template.php')) {
+    } else if(is_page(url_to_postid(get_option('view_dogs_page')))) {
          $requestURL = $plugin_base . '/pullanimals.php?type=dog';
          echo $link_scripts . '<script type="text/javascript">
                     window.onload = pull_animals("' . $requestURL . '")
-                </script>';
+                </script><!--' . get_option('view_animal_page') . '-->';
     }
 }
 
 
 function pp_setup_view_animal_page_header() {
     $plugin_base = plugins_url(null, __FILE__);
-    if(is_page("View Animal"))  {
+    if(is_page(url_to_postid(get_option('view_animal_page'))))  {
         echo '<script type="text/javascript" src="' . $plugin_base . '/js/xml2json.min.js"></script>
             <script type="text/javascript" src="' . $plugin_base . '/js/view_animal.js"></script>
             <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
@@ -41,7 +41,7 @@ function pp_setup_view_animal_page_header() {
         if(!empty($animalid) ) {
             $xml = file_get_contents("http://www.petango.com/webservices/wsadoption.asmx/AdoptableDetails?authkey=pxmj0427a7afmdgc0v6030lfurxt0ypw57dbs0dr4ga2g2j0a4&animalID=" . $animalid);
             echo '<script type="text/javascript">
-            var detail =' . json_encode($xml) . ';</script>';
+                var detail =' . json_encode($xml) . ';</script>';
         }
     }
 }
