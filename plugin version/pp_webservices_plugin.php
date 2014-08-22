@@ -8,7 +8,7 @@
     Author URI: taylorbritton.me
     License: GPL2
     */
-include('pp_widget.php');
+include('pp_settings.php');
 
 function pp_setup_view_adoptable_page() {
     $plugin_base = plugins_url(null, __FILE__);
@@ -70,7 +70,4 @@ add_action('wp_footer', 'pp_setup_view_animal_page_footer');
 
 //Hook for rewriting View Animal urls.
 add_action('init', 'pp_add_rewrite');
-
-//Hook for registering the widget
-add_action( 'widgets_init', 'pp_register_widget' );
 ?>
