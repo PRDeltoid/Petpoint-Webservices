@@ -39,7 +39,7 @@ function pp_setup_view_animal_page_header() {
             <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
         $animalid = get_query_var('animalid');
         if(!empty($animalid) ) {
-            $xml = file_get_contents("http://www.petango.com/webservices/wsadoption.asmx/AdoptableDetails?authkey=pxmj0427a7afmdgc0v6030lfurxt0ypw57dbs0dr4ga2g2j0a4&animalID=" . $animalid);
+            $xml = file_get_contents("http://www.petango.com/webservices/wsadoption.asmx/AdoptableDetails?authkey=" . get_option('pp_auth_key') . "&animalID=" . $animalid);
             echo '<script type="text/javascript">
                 var detail =' . json_encode($xml) . ';</script>';
         }
@@ -54,6 +54,7 @@ function pp_setup_view_animal_page_footer() {
 }
 
 function pp_add_rewrite() {
+    $url = parse_url(get_option('view_animal_page'));
     add_rewrite_rule('adopt/meet-adoptable-pets/viewanimal/([0-9]{1,})/?', 'index.php?page_id=10434&animalid=$matches[1]', 'top');
 }
 
