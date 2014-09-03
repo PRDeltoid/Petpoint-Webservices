@@ -17,16 +17,18 @@ function pp_setup_view_adoptable_page() {
                 <script type="text/javascript" src="' . $plugin_base . '/js/pull_animals.js"></script>
                 <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
 
+    $view_animal_link = get_option('view_animal_page');
+
     if (is_page(url_to_postid(get_option('view_cats_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=cat';
          echo $link_scripts . '<script type="text/javascript">
-                    window.onload = pull_animals("' . $requestURL . '")
+                    window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '")
                 </script>';
     } else if(is_page(url_to_postid(get_option('view_dogs_page')))) {
          $requestURL = $plugin_base . '/pullanimals.php?type=dog';
          echo $link_scripts . '<script type="text/javascript">
-                    window.onload = pull_animals("' . $requestURL . '")
-                </script><!--' . get_option('view_animal_page') . '-->';
+                    window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '")
+                </script>';
     }
 }
 

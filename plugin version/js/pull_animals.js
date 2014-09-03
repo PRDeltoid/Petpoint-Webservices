@@ -1,4 +1,4 @@
-function pull_animals(requestURL_In)
+function pull_animals(view_animal_url, requestURL_In)
 {
     var x2js = new X2JS();
     var xmlHttp = null;
@@ -11,7 +11,7 @@ function pull_animals(requestURL_In)
     //When the HTTP request is complete, organize and show the results
     xmlHttp.onload = function() {
         //Create an area for our animals to be appended to.
-        var output_area = document.getElementById('animals');
+        var output_area = document.getElementById('animal');
         var output_html = "";            //Add a header to the output.
         var jsonObj = x2js.xml_str2json(xmlHttp.responseText);      //Convert messy XML into nice, easy JSON
 
@@ -28,8 +28,8 @@ function pull_animals(requestURL_In)
 
             //All animal detail formatting goes here.
             var animal_detail_formatted = "<div class='adoptable-animal'>" +
-                                        "<a href='/adopt/meet-adoptable-pets/viewanimal/" + e.adoptableSearch["ID"] + "/'><img class='animal-picture' src=" + e.adoptableSearch["Photo"] + "></a>" +
-                                        "<div class='animal-name'><a href='/adopt/meet-adoptable-pets/viewanimal/" + e.adoptableSearch["ID"] + "/'>" + e.adoptableSearch["Name"] + "</a></div>" +
+                                        "<a href='" + view_animal_url + e.adoptableSearch["ID"] + "/'><img class='animal-picture' src=" + e.adoptableSearch["Photo"] + "></a>" +
+                                        "<div class='animal-name'><a href='" + view_animal_url + e.adoptableSearch["ID"] + "/'>" + e.adoptableSearch["Name"] + "</a></div>" +
                                         "<p>" +animal_breed_formatted + "</p>" +
                                         "<p>" + e.adoptableSearch["Sex"] + "</p>" +
                                         "</div>";
