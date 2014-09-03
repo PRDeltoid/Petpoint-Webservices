@@ -54,8 +54,10 @@ function pp_setup_view_animal_page_footer() {
 }
 
 function pp_add_rewrite() {
+    $animal_page_id = url_to_postid(get_option('view_animal_page'));
     $url = parse_url(get_option('view_animal_page'));
-    add_rewrite_rule('adopt/meet-adoptable-pets/viewanimal/([0-9]{1,})/?', 'index.php?page_id=10434&animalid=$matches[1]', 'top');
+    $url_path = ltrim ($url['path'],'/');
+    add_rewrite_rule($url_path . '([0-9]{1,})/?', 'index.php?page_id=' . $animal_page_id . '&animalid=$matches[1]', 'top');
 }
 
 function pp_add_query_vars_filter( $vars ){
