@@ -13,23 +13,28 @@ function pull_animals(view_animal_url, requestURL_In)
             if(animal.adoptableSearch == undefined) {
                 return;
             }
-            //Format the animals breed. Don't include Mix as a secondary breed (too vague, too cluttered).
-            var animal_breed_formatted = format_breed(animal.adoptableSearch["PrimaryBreed"]);
-            
-            if( animal.adoptableSearch["SecondaryBreed"] != "Mix") { animal_breed_formatted += ", " + format_breed(animal.adoptableSearch["SecondaryBreed"]);}
-
-            //All animal detail formatting goes here.
-            var animal_detail_formatted = "<div class='adoptable-animal'>" +
-                                        "<a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'><img class='animal-picture' src=" + animal.adoptableSearch["Photo"] + "></a>" +
-                                        "<div class='animal-name'><a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'>" + animal.adoptableSearch["Name"] + "</a></div>" +
-                                        "<p>" +animal_breed_formatted + "</p>" +
-                                        "<p>" + animal.adoptableSearch["Sex"] + "</p>" +
-                                        "</div>";
-            output_html += animal_detail_formatted;
+            //Insert invidual formatted animal's details as HTML into the final output output_html
+            output_html += create_animal_detail(animal, view_animal_url);
             return;
         });
         output_area.innerHTML = output_html;
     });
+}
+
+function create_animal_detail(animal, view_animal_url) {
+    //Format the animals breed. Don't include Mix as a secondary breed (too vague, too cluttered).
+    var animal_breed_formatted = format_breed(animal.adoptableSearch["PrimaryBreed"]);
+    
+    if( animal.adoptableSearch["SecondaryBreed"] != "Mix") { 
+        animal_breed_formatted += ", " + format_breed(animal.adoptableSearch["SecondaryBreed"]);
+    }
+
+    return "<div class='adoptable-animal'>" +
+                "<a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'><img class='animal-picture' src=" + animal.adoptableSearch["Photo"] + "></a>" +
+                "<div class='animal-name'><a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'>" + animal.adoptableSearch["Name"] + "</a></div>" +
+                "<p>" +animal_breed_formatted + "</p>" +
+                "<p>" + animal.adoptableSearch["Sex"] + "</p>" +
+            "</div>";
 }
 
 function format_breed(breed_string) {
