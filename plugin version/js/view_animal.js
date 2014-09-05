@@ -1,18 +1,31 @@
-function view_animal(detail) 
+function view_animal(animal_details) 
 {
-    var x2js = new X2JS();
-    var jsonObj = x2js.xml_str2json(detail);  
-    var animal_details = jsonObj.adoptableDetails;
-    var output_html = "<img class='animal-picture' src='" + animal_details["Photo1"] + "'></img>" +
-                    "<table>" +
-                    "<tr><td>" + animal_details["AnimalName"] + "</tr></td>" +
-                    "<tr><td>" + animal_details["PrimaryBreed"] + "</tr></td>" +
-                    "<tr><td>" + animal_details["Age"] + " weeks old</tr></td>" +
-                    "<tr><td>" + animal_details["BodyWeight"] + "</tr></td>" +
-                    "</table>";
-                        
-    var output_area = document.getElementById('animal');
+    var output_area = document.getElementById('animal'); //The div element that our HTML will be placed inside of.
 
-    output_area.innerHTML = output_html;
+    //Fields here will show up on the page. The title is what you want the user to see, and the field_name is the name of the variable in the animal_details object. 
+    var output_fields = [
+        {title: "Name",     field_name: "AnimalName"}, 
+        {title: "Breed",    field_name: "PrimaryBreed"},
+        {title: "Age",      field_name: "Age"},
+        {title: "Sex",      field_name: "Sex"},
+        {title: "Weight",   field_name: "BodyWeight"},
+        {title: "Desciption", field_name: "Dsc"},
+        {title: "BE Color", field_name: "BehaviorResult"}
+    ];
 
+    var output_html = "<table class='animal-detail'><img id='animal-picture' src='" + animal_details["Photo1"] + "'></img>";
+
+    output_fields.map(function(field_object) {
+        output_html += "<tr><td><b>" + field_object.title + ": </b></td><td>" + animal_details[field_object.field_name] + "</td></tr>";
+    });
+
+    output_html += "</table>";
+    
+    output_area.innerHTML = output_html; //After table is built, insert the html into the page.
+
+}
+
+function load_photo(photo_url) {
+    var imageElmement     = document.getElementById('animal-picture');
+    imageElmement.src = photo_url;
 }

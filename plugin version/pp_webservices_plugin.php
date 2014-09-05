@@ -40,10 +40,12 @@ function pp_setup_view_animal_page_header() {
             <script type="text/javascript" src="' . $plugin_base . '/js/view_animal.js"></script>
             <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
         $animalid = get_query_var('animalid');
-        if(!empty($animalid) ) {
-            $xml = file_get_contents("http://www.petango.com/webservices/wsadoption.asmx/AdoptableDetails?authkey=" . get_option('pp_auth_key') . "&animalID=" . $animalid);
+if(!empty($animalid) ) {
+            $xml_string = file_get_contents("http://www.petango.com/webservices/wsadoption.asmx/AdoptableDetails?authkey=" . get_option('pp_auth_key') . "&animalID=" . $animalid);
+            $xml = simplexml_load_string($xml_string);
+            $json = json_encode($xml);
             echo '<script type="text/javascript">
-                var detail =' . json_encode($xml) . ';</script>';
+                var detail =' . $json . ';</script>';
         }
     }
 }

@@ -3,6 +3,10 @@
     padding-left: 10px;
 }
 
+.animal-detail td {
+    padding-right: 5px;
+}
+
 .animal-picture {
     float: left;
     border: 1px solid #000000;
