@@ -30,7 +30,7 @@ function create_animal_detail(animal, view_animal_url) {
     }
 
     return "<div class='adoptable-animal'>" +
-                "<a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'><img class='animal-picture' src=" + animal.adoptableSearch["Photo"] + "></a>" +
+                "<a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'><img class='animal-picture' src='" + animal.adoptableSearch["Photo"] + "' style='border: 3px solid " + animal.adoptableSearch["BehaviorResult"] + "'></a>" +
                 "<div class='animal-name'><a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'>" + animal.adoptableSearch["Name"] + "</a></div>" +
                 "<p>" +animal_breed_formatted + "</p>" +
                 "<p>" + animal.adoptableSearch["Sex"] + "</p>" +

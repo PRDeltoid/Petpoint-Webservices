@@ -13,7 +13,7 @@ function view_animal(animal_details)
         {title: "BE Color", field_name: "BehaviorResult"}
     ];
 
-    var output_html = "<table class='animal-detail'><img id='animal-picture' src='" + animal_details["Photo1"] + "'></img>";
+    var output_html = "<table class='animal-detail'><img class='animal-picture' src='" + animal_details["Photo1"] + "' style='border: 3px solid " + animal_details["BehaviorResult"] + "'></img>";
 
     output_fields.map(function(field_object) {
         output_html += "<tr><td><b>" + field_object.title + ": </b></td><td>" + animal_details[field_object.field_name] + "</td></tr>";
