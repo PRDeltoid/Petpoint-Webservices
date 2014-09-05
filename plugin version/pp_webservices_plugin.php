@@ -13,8 +13,7 @@ include('pp_settings.php');
 function pp_setup_view_adoptable_page() {
     $plugin_base = plugins_url(null, __FILE__);
 
-    $link_scripts = '<script type="text/javascript" src="' . $plugin_base . '/js/xml2json.min.js"></script>
-                <script type="text/javascript" src="' . $plugin_base . '/js/pull_animals.js"></script>
+    $link_scripts = '<script type="text/javascript" src="' . $plugin_base . '/js/pull_animals.js"></script>
                 <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
 
     $view_animal_link = get_option('view_animal_page');
@@ -36,8 +35,7 @@ function pp_setup_view_adoptable_page() {
 function pp_setup_view_animal_page_header() {
     $plugin_base = plugins_url(null, __FILE__);
     if(is_page(url_to_postid(get_option('view_animal_page'))))  {
-        echo '<script type="text/javascript" src="' . $plugin_base . '/js/xml2json.min.js"></script>
-            <script type="text/javascript" src="' . $plugin_base . '/js/view_animal.js"></script>
+        echo '<script type="text/javascript" src="' . $plugin_base . '/js/view_animal.js"></script>
             <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
         $animalid = get_query_var('animalid');
 if(!empty($animalid) ) {
