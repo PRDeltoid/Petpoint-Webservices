@@ -8,6 +8,7 @@ function pull_animals(view_animal_url, requestURL_In)
         var output_area = document.getElementById('animal');
         var output_html = "";
 
+        //XmlNode is a holdover from the conversion process.
         results.XmlNode.map(function(animal) {            
             //Safety check. Make sure there isn't a null node (the last node is usually null)
             if(animal.adoptableSearch == undefined) {
@@ -22,18 +23,21 @@ function pull_animals(view_animal_url, requestURL_In)
 }
 
 function create_animal_detail(animal, view_animal_url) {
+   //Sets the animal variable to be easier to read. 
+    var animal = animal.adoptableSearch;
+   
     //Format the animals breed. Don't include Mix as a secondary breed (too vague, too cluttered).
-    var animal_breed_formatted = format_breed(animal.adoptableSearch["PrimaryBreed"]);
+    var animal_breed_formatted = format_breed(animal["PrimaryBreed"]);
     
-    if( animal.adoptableSearch["SecondaryBreed"] != "Mix") { 
-        animal_breed_formatted += ", " + format_breed(animal.adoptableSearch["SecondaryBreed"]);
+    if( animal["SecondaryBreed"] != "Mix") { 
+        animal_breed_formatted += ", " + format_breed(animal["SecondaryBreed"]);
     }
 
     return "<div class='adoptable-animal'>" +
-                "<a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'><img class='animal-picture' src='" + animal.adoptableSearch["Photo"] + "' style='border: 3px solid " + animal.adoptableSearch["BehaviorResult"] + "'></a>" +
-                "<div class='animal-name'><a href='" + view_animal_url + animal.adoptableSearch["ID"] + "/'>" + animal.adoptableSearch["Name"] + "</a></div>" +
+                "<a href='" + view_animal_url + animal["ID"] + "/'><img class='animal-picture' src='" + animal["Photo"] + "' style='border: 3px solid " + animal["BehaviorResult"] + "'></a>" +
+                "<div class='animal-name'><a href='" + view_animal_url + animal["ID"] + "/'>" + animal["Name"] + "</a></div>" +
                 "<p>" +animal_breed_formatted + "</p>" +
-                "<p>" + animal.adoptableSearch["Sex"] + "</p>" +
+                "<p>" + animal["Sex"] + "</p>" +
             "</div>";
 }
 
