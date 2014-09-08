@@ -85,8 +85,8 @@ function load_photo(photo_url) {
 function setup_photo_links(animal_details) {
     var photo_output_area = document.getElementById('photo-links');
 
-    //Count the number of photo entries
-    var photo_regex = /Photo[1-9]{1}/g;
+    //Count the number of photo entries (Regex catches all Photo nodes with a link inside them, if it has no link, then it's a blank photo)
+    var photo_regex = /"Photo[1-9]{1}":"http:/g;
     var num_of_photos = JSON.stringify(animal_details).match(photo_regex).length;
 
     //Create a button node for each picture, and add an event listener to fire when that button is clicked. 
