@@ -6,7 +6,7 @@ function pull_animals(view_animal_url, requestURL_In)
 
     jQuery.getJSON(requestURL, function(results) {
         var output_area = document.getElementById('animal');
-        var output_html = "";
+        output_area.innerHTML = "";
 
         //XmlNode is a holdover from the conversion process.
         results.XmlNode.map(function(animal) {            
@@ -15,10 +15,9 @@ function pull_animals(view_animal_url, requestURL_In)
                 return;
             }
             //Insert invidual formatted animal's details as HTML into the final output output_html
-            output_html += create_animal_detail(animal, view_animal_url);
+            output_area.appendChild(create_animal_detail(animal, view_animal_url));
             return;
         });
-        output_area.innerHTML = output_html;
     });
 }
 
@@ -33,12 +32,36 @@ function create_animal_detail(animal, view_animal_url) {
         animal_breed_formatted += ", " + format_breed(animal["SecondaryBreed"]);
     }
 
-    return "<div class='adoptable-animal'>" +
-                "<a href='" + view_animal_url + animal["ID"] + "/'><img class='animal-picture' src='" + animal["Photo"] + "' style='border: 3px solid " + animal["BehaviorResult"] + "'></a>" +
-                "<div class='animal-name'><a href='" + view_animal_url + animal["ID"] + "/'>" + animal["Name"] + "</a></div>" +
-                "<p>" +animal_breed_formatted + "</p>" +
-                "<p>" + animal["Sex"] + "</p>" +
-            "</div>";
+    var animal_node = document.createElement('div');
+    animal_node.setAttribute("class", "adoptable-animal");
+
+    var animal_picture = document.createElement('img');
+    animal_picture.setAttribute("class", "animal-picture");
+    animal_picture.setAttribute("src", animal["Photo"]);
+    animal_picture.setAttribute("style", 'border: 3px solid ' + animal["BehaviorResult"]);
+
+    var animal_picture_link = document.createElement('a');
+    animal_picture_link.setAttribute("href", view_animal_url + animal["ID"]);
+    animal_picture_link.appendChild(animal_picture);
+
+    animal_node.appendChild(animal_picture_link);
+
+    var animal_name = document.createElement('a');
+    animal_name.setAttribute("href", view_animal_url + animal["ID"]);
+    animal_name.setAttribute("class", "animal-name");
+    animal_name.innerHTML = animal["Name"];
+
+    animal_node.appendChild(animal_name);
+
+    var animal_breed = document.createElement('p');
+    animal_breed.innerHTML = animal_breed_formatted;
+    var animal_sex = document.createElement('p');
+    animal_sex.innerHTML = animal["Sex"];
+
+    animal_node.appendChild(animal_breed);
+    animal_node.appendChild(animal_sex);
+
+    return animal_node;
 }
 
 function format_breed(breed_string) {

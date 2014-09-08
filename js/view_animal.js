@@ -17,28 +17,53 @@ function view_animal(animal_details)
         {title: "BE Color", field_name: "BehaviorResult"}
     ];
 
-    var output_html = "<img class='animal-picture' id='animal-picture' src='" + animal_details["Photo1"] + "' style='border: 3px solid " + animal_details["BehaviorResult"] + "'></img><div id='photo-links'></div><table class='animal-detail'>";
+    //Create the animal's picture element.
+    var animal_picture_node = document.createElement("img");
+    animal_picture_node.setAttribute("class", "animal-picture")
+    animal_picture_node.setAttribute("id", "animal-picture")
+    animal_picture_node.setAttribute("src", animal_details["Photo1"])
+    animal_picture_node.setAttribute("style", "border: 3px solid " + animal_details["BehaviorResult"]); 
+    output_area.appendChild(animal_picture_node);
 
+    //Create the buttons to view additional pictures of the animal.
+    var animal_pic_link_node = document.createElement("div");
+    animal_pic_link_node.setAttribute("id", "photo-links");
+    output_area.appendChild(animal_pic_link_node);
+    setup_photo_links(animal_details);
 
+    //Create the animal's detail table.
+    var animal_detail_node = document.createElement("table");
+    animal_detail_node.setAttribute("class", "animal-detail");
+
+    //Go through each object in output_fields and output a table row containing the title, and the animal's detail for the field_name
     output_fields.map(function(field_object) {
         //Format the output if a Type is set. 
         if(field_object.type) {
             animal_details[field_object.field_name] = format_field(field_object, animal_details[field_object.field_name]);
         }
 
-        output_html += "<tr><td><b>" + field_object.title + ": </b></td><td>" + animal_details[field_object.field_name] + "</td></tr>";
+        var detail_row_node = document.createElement('tr');
+
+        //Create the title
+        var detail_data_name_node = document.createElement('td');
+        detail_data_name_node.innerHTML = "<b>" + field_object.title + "</b>"
+        detail_row_node.appendChild(detail_data_name_node);
+
+        //Create the animal detail data
+        var detail_data_node = document.createElement('td');
+        detail_data_node.innerHTML = animal_details[field_object.field_name];
+        detail_row_node.appendChild(detail_data_node);
+
+        //Add it all to the animal_detail_node table.
+        animal_detail_node.appendChild(detail_row_node);
     });
 
-    output_html += "</table>";
-    
-    output_area.innerHTML = output_html; //After table is built, insert the html into the page.
-
-    setup_photo_links(animal_details);
-
+    //Add the detail to the page.
+    output_area.appendChild(animal_detail_node);
 }
 
 function load_photo(photo_url) {
-    var imageElmement     = document.getElementById('animal-picture');
+    var imageElmement = document.getElementById('animal-picture');
     imageElmement.src = photo_url;
 }
 
@@ -61,7 +86,7 @@ function setup_photo_links(animal_details) {
 
         //Insert input node into the DOM.
         photo_output_area.appendChild(photo_node);
-        var picture_element = document.getElementById('photo'+photo_num);
+        var picture_element = document.getElementById('photo' + photo_num);
 
         //Finally, add an event listener to switch to the picture when it's button is clicked (using load_photo).
         picture_element.addEventListener("click", load_photo.bind(null, photo_url));
