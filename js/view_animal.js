@@ -1,10 +1,25 @@
-function view_animal(animal_details) 
+function view_animal(animal_id, plugin_base) 
 {
+    var requestURL = plugin_base + "/viewanimal.php?id=" + animal_id
+
+    //request animal data
+    var animal_details;
+    jQuery.ajax({
+        type: 'GET',
+        url: requestURL,
+        dataType: 'json',
+        success: function(data) {
+            animal_details=data;
+        },
+        data: {},
+        async: false
+    });
+
     var output_area = document.getElementById('animal'); //The div element that our HTML will be placed inside of.
 
     //Fields here will show up on the page. The title is what you want the user to see, and the field_name is the name of the variable in the animal_details object. 
     /*TYPE CAN ONLY BE ONE OF (case-sensitive): 
-      age: formats age as years/months/weeks.
+      age: formats age as years/months.
       breed: formats breed
     */
     var output_fields = [

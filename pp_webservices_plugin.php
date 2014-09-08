@@ -10,8 +10,10 @@
     */
 include('pp_settings.php');
 
+$plugin_base = plugins_url(null, __FILE__);
+
 function pp_setup_view_adoptable_page() {
-    $plugin_base = plugins_url(null, __FILE__);
+    global $plugin_base;
 
     $link_scripts = '<script type="text/javascript" src="' . $plugin_base . '/js/pull_animals.js"></script>
                 <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
@@ -33,25 +35,21 @@ function pp_setup_view_adoptable_page() {
 
 
 function pp_setup_view_animal_page_header() {
-    $plugin_base = plugins_url(null, __FILE__);
+    global $plugin_base;
     if(is_page(url_to_postid(get_option('view_animal_page'))))  {
         echo '<script type="text/javascript" src="' . $plugin_base . '/js/view_animal.js"></script>
             <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
-        $animalid = get_query_var('animalid');
-if(!empty($animalid) ) {
-            $xml_string = file_get_contents("http://www.petango.com/webservices/wsadoption.asmx/AdoptableDetails?authkey=" . get_option('pp_auth_key') . "&animalID=" . $animalid);
-            $xml = simplexml_load_string($xml_string);
-            $json = json_encode($xml);
-            echo '<script type="text/javascript">
-                var detail =' . $json . ';</script>';
-        }
     }
 }
 
 
 function pp_setup_view_animal_page_footer() {
-    if(is_page("View Animal"))  {
-        echo '<script>window.onload = view_animal(detail)</script>';
+    global $plugin_base;
+    if(is_page(url_to_postid(get_option('view_animal_page'))))  {
+        $animalid = get_query_var('animalid');
+        if(!empty($animalid) ) {
+            echo '<script>window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '")</script>';
+        }
     }
 }
 
