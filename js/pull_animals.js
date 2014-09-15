@@ -28,10 +28,6 @@ function create_animal_detail(animal, view_animal_url) {
     //Format the animals breed. Don't include Mix as a secondary breed (too vague, too cluttered).
     var animal_breed_formatted = format_breed(animal["PrimaryBreed"]);
     
-    if( animal["SecondaryBreed"] != "Mix") { 
-        animal_breed_formatted += ", " + format_breed(animal["SecondaryBreed"]);
-    }
-
     var animal_node = document.createElement('div');
     animal_node.setAttribute("class", "adoptable-animal");
 

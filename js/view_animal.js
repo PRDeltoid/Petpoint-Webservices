@@ -61,13 +61,15 @@ function view_animal(animal_id, plugin_base)
     var animal_detail_node = document.createElement("table");
     animal_detail_node.setAttribute("class", "animal-detail");
 
+    console.log(animal_details);
+
     //Go through each object in output_fields and output a table row containing the title, and the animal's detail for the field_name
     output_fields.map(function(field_object) {
-        //Format the output if a Type is set. 
-        if(field_object.type) {
-            animal_details[field_object.field_name] = format_field(field_object, animal_details[field_object.field_name]);
-        }
         if(typeof animal_details[field_object.field_name] != 'object') {
+            //Format the output if a Type is set. 
+            if(field_object.type) {
+                animal_details[field_object.field_name] = format_field(field_object, animal_details[field_object.field_name]);
+            }
 
             var detail_row_node = document.createElement('tr');
 
