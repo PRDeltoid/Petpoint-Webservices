@@ -22,6 +22,7 @@ function pp_enqueue_scripts_styles() {
     if(is_page(url_to_postid(get_option('view_animal_page'))))  {
         wp_enqueue_script('view-animal', $plugin_base . '/js/view_animal.js', array('jquery'));
         wp_enqueue_style('pp-webservices-style', $plugin_base . '/css/pp-webservices-style.css');
+        wp_enqueue_style('pp-bootstrap-style', $plugin_base . '/css/bootstrap.min.css');
     }
 
 }
