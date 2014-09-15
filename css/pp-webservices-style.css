@@ -7,8 +7,11 @@
     padding-right: 5px;
 }
 
-.animal-picture {
+.animal-picture-container {
     float: left;
+}
+
+.animal-picture {
     width: 175px;
     height: 160px;
 }

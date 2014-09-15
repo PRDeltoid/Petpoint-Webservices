@@ -24,27 +24,36 @@ function view_animal(animal_id, plugin_base)
     */
     var output_fields = [
         {title: "Name",     field_name: "AnimalName"}, 
-        {title: "Breed",    field_name: "PrimaryBreed", type:"breed"},
+        {title: "Breed",    field_name: "PrimaryBreed", type: "breed"},
         {title: "Age",      field_name: "Age",          type: "age"},
         {title: "Sex",      field_name: "Sex"},
         {title: "Weight",   field_name: "BodyWeight"},
-        {title: "Desciption", field_name: "Dsc"},
+        {title: "Desciption", field_name: "Dsc",        type: "desciption"},
         {title: "BE Color", field_name: "BehaviorResult"}
     ];
 
     //Create the animal's picture element.
+
+    var animal_picture_container_node = document.createElement("div");
+    animal_picture_container_node.setAttribute("class", "animal-picture-container");
+
     var animal_picture_node = document.createElement("img");
     animal_picture_node.setAttribute("class", "animal-picture")
     animal_picture_node.setAttribute("id", "animal-picture")
     animal_picture_node.setAttribute("src", animal_details["Photo1"])
     animal_picture_node.setAttribute("style", "border: 3px solid " + animal_details["BehaviorResult"]); 
-    output_area.appendChild(animal_picture_node);
+    animal_picture_container_node.appendChild(animal_picture_node);
+
 
     //Create the buttons to view additional pictures of the animal.
     var animal_pic_link_node = document.createElement("div");
     animal_pic_link_node.setAttribute("id", "photo-links");
     output_area.appendChild(animal_pic_link_node);
     setup_photo_links(animal_details);
+    animal_picture_container_node.appendChild(animal_pic_link_node);
+    
+    //Place the picture container node on the page
+    output_area.appendChild(animal_picture_container_node);
 
     //Create the animal's detail table.
     var animal_detail_node = document.createElement("table");
@@ -56,21 +65,23 @@ function view_animal(animal_id, plugin_base)
         if(field_object.type) {
             animal_details[field_object.field_name] = format_field(field_object, animal_details[field_object.field_name]);
         }
+        if(typeof animal_details[field_object.field_name] != 'object') {
 
-        var detail_row_node = document.createElement('tr');
+            var detail_row_node = document.createElement('tr');
 
-        //Create the title
-        var detail_data_name_node = document.createElement('td');
-        detail_data_name_node.innerHTML = "<b>" + field_object.title + "</b>"
-        detail_row_node.appendChild(detail_data_name_node);
+            //Create the title
+            var detail_data_name_node = document.createElement('td');
+            detail_data_name_node.innerHTML = "<b>" + field_object.title + "</b>"
+            detail_row_node.appendChild(detail_data_name_node);
 
-        //Create the animal detail data
-        var detail_data_node = document.createElement('td');
-        detail_data_node.innerHTML = animal_details[field_object.field_name];
-        detail_row_node.appendChild(detail_data_node);
+            //Create the animal detail data
+            var detail_data_node = document.createElement('td');
+            detail_data_node.innerHTML = animal_details[field_object.field_name];
+            detail_row_node.appendChild(detail_data_node);
 
-        //Add it all to the animal_detail_node table.
-        animal_detail_node.appendChild(detail_row_node);
+            //Add it all to the animal_detail_node table.
+            animal_detail_node.appendChild(detail_row_node);
+        }
     });
 
     //Add the detail to the page.
@@ -117,6 +128,9 @@ function format_field(field_object, field_data) {
         case "breed":
             return format_breed(field_data);
             break;
+        case "desciption":
+            return format_description(field_data);
+            break;
         default:
             break;
     }
@@ -137,4 +151,9 @@ function format_breed(breed) {
     var split_string = breed.split(", ");
     split_string.reverse();
     return split_string.join(" ");
+}
+
+function format_description(desc) {
+    //Remove any (initials) or [initials] notes inside the animal desciption.
+   return desc.replace(/[\[\(]\w+[\)\]]/g, '');
 }
