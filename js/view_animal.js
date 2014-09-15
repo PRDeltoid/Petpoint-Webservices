@@ -21,6 +21,8 @@ function view_animal(animal_id, plugin_base)
     /*TYPE CAN ONLY BE ONE OF (case-sensitive): 
       age: formats age as years/months.
       breed: formats breed
+      description: removes author initials between ()s and []s
+      be: styles the BE result as the color of the result (A green BE result would style the output as green text)
     */
     var output_fields = [
         {title: "Name",     field_name: "AnimalName"}, 
@@ -29,7 +31,7 @@ function view_animal(animal_id, plugin_base)
         {title: "Sex",      field_name: "Sex"},
         {title: "Weight",   field_name: "BodyWeight"},
         {title: "Desciption", field_name: "Dsc",        type: "desciption"},
-        {title: "BE Color", field_name: "BehaviorResult"}
+        {title: "BE Color", field_name: "BehaviorResult", type: "be"}
     ];
 
     //Create the animal's picture element.
@@ -38,10 +40,10 @@ function view_animal(animal_id, plugin_base)
     animal_picture_container_node.setAttribute("class", "animal-picture-container");
 
     var animal_picture_node = document.createElement("img");
-    animal_picture_node.setAttribute("class", "animal-picture")
+    animal_picture_node.setAttribute("class", "view-animal-picture")
     animal_picture_node.setAttribute("id", "animal-picture")
     animal_picture_node.setAttribute("src", animal_details["Photo1"])
-    animal_picture_node.setAttribute("style", "border: 3px solid " + animal_details["BehaviorResult"]); 
+    //animal_picture_node.setAttribute("style", "border: 3px solid " + animal_details["BehaviorResult"]); 
     animal_picture_container_node.appendChild(animal_picture_node);
 
 
@@ -108,6 +110,7 @@ function setup_photo_links(animal_details) {
         var photo_node = document.createElement('input');
         photo_node.setAttribute("type", "button")
         photo_node.setAttribute("id", "photo" + photo_num);
+        photo_node.setAttribute("class", "photo-btn btn btn-primary btn-sm");
         photo_node.setAttribute("value", photo_num);
 
         //Insert input node into the DOM.
@@ -130,6 +133,9 @@ function format_field(field_object, field_data) {
             break;
         case "desciption":
             return format_description(field_data);
+            break;
+        case "be":
+            return format_be(field_data);
             break;
         default:
             break;
@@ -156,4 +162,8 @@ function format_breed(breed) {
 function format_description(desc) {
     //Remove any (initials) or [initials] notes inside the animal desciption.
    return desc.replace(/[\[\(]\w+[\)\]]/g, '');
+}
+
+function format_be(be_result) {
+    return "<span style='font-weight:bold; color: " + be_result + "'>" + be_result + "</span>   <sup><a href='#' target='_blank'>What is this?</a></sup>";
 }

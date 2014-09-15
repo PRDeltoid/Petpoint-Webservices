@@ -38,7 +38,7 @@ function create_animal_detail(animal, view_animal_url) {
     var animal_picture = document.createElement('img');
     animal_picture.setAttribute("class", "animal-picture");
     animal_picture.setAttribute("src", animal["Photo"]);
-    animal_picture.setAttribute("style", 'border: 3px solid ' + animal["BehaviorResult"]);
+    //animal_picture.setAttribute("style", 'border: 3px solid ' + animal["BehaviorResult"]);
 
     var animal_picture_link = document.createElement('a');
     animal_picture_link.setAttribute("href", view_animal_url + animal["ID"]);
