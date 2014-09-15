@@ -12,36 +12,37 @@ include('pp_settings.php');
 
 $plugin_base = plugins_url(null, __FILE__);
 
-function pp_setup_view_adoptable_page() {
+function pp_enqueue_scripts_styles() {
     global $plugin_base;
 
-    $link_scripts = '<script type="text/javascript" src="' . $plugin_base . '/js/pull_animals.js"></script>
-                <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
+    if (is_page(url_to_postid(get_option('view_cats_page'))) || is_page(url_to_postid(get_option('view_dogs_page')))) {
+        wp_enqueue_script('pull-animals', $plugin_base . '/js/pull_animals.js', array('jquery'));
+        wp_enqueue_style('pp-webservices-style',  $plugin_base . '/css/pp-webservices-style.css');
+    }
+    if(is_page(url_to_postid(get_option('view_animal_page'))))  {
+        wp_enqueue_script('view-animal', $plugin_base . '/js/view_animal.js', array('jquery'));
+        wp_enqueue_style('pp-webservices-style', $plugin_base . '/css/pp-webservices-style.css');
+    }
+
+}
+
+function pp_setup_view_adoptable_page() {
+    global $plugin_base;
 
     $view_animal_link = get_option('view_animal_page');
 
     if (is_page(url_to_postid(get_option('view_cats_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=cat';
-         echo $link_scripts . '<script type="text/javascript">
+         echo '<script type="text/javascript">
                     window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '")
                 </script>';
     } else if(is_page(url_to_postid(get_option('view_dogs_page')))) {
          $requestURL = $plugin_base . '/pullanimals.php?type=dog';
-         echo $link_scripts . '<script type="text/javascript">
+         echo '<script type="text/javascript">
                     window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '")
                 </script>';
     }
 }
-
-
-function pp_setup_view_animal_page_header() {
-    global $plugin_base;
-    if(is_page(url_to_postid(get_option('view_animal_page'))))  {
-        echo '<script type="text/javascript" src="' . $plugin_base . '/js/view_animal.js"></script>
-            <link rel="stylesheet" href="' . $plugin_base . '/css/pp-webservices-style.css">';
-    }
-}
-
 
 function pp_setup_view_animal_page_footer() {
     global $plugin_base;
@@ -68,8 +69,8 @@ add_filter( 'query_vars', 'pp_add_query_vars_filter' );
 
 //Hooks for adding neccissary JS files to adoptable pages.
 add_action('wp_head', 'pp_setup_view_adoptable_page');
-add_action('wp_head', 'pp_setup_view_animal_page_header');
 add_action('wp_footer', 'pp_setup_view_animal_page_footer');
+add_action('wp_enqueue_scripts', 'pp_enqueue_scripts_styles');
 
 //Hook for rewriting View Animal urls.
 add_action('init', 'pp_add_rewrite');

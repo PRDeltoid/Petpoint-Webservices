@@ -22,7 +22,7 @@ function view_animal(animal_id, plugin_base)
       age: formats age as years/months.
       breed: formats breed
       description: removes author initials between ()s and []s
-      be: styles the BE result as the color of the result (A green BE result would style the output as green text)
+      be: styles the BE result as the color of the result (A green BE result would style the output as green text). Also adds a subscript 'What is this' link to the end, to explain the meaning of the BE colors.
     */
     var output_fields = [
         {title: "Name",     field_name: "AnimalName"}, 
@@ -165,5 +165,6 @@ function format_description(desc) {
 }
 
 function format_be(be_result) {
+    //Colors the result as the behavior result's color. Also adds a small Superscript link at the end to link to a page where the BE colors are explained
     return "<span style='font-weight:bold; color: " + be_result + "'>" + be_result + "</span>   <sup><a href='#' target='_blank'>What is this?</a></sup>";
 }
