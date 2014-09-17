@@ -27,12 +27,12 @@ function view_animal(animal_id, plugin_base)
     //Create the animal's picture element.
 
     var animal_picture_container_node = 
-            create_html_node('div', [ {name:'class',  value: 'animal-picture-container'} ], output_area, 
-                [create_html_node('img', [ {name: 'class', value: 'view-animal-picture'},
+            create_html_node('div', [ {name:'class',  value: 'animal-picture-container'} ], output_area, [
+                create_html_node('img', [ {name: 'class', value: 'view-animal-picture'},
                                           {name: 'id',    value: 'animal-picture'},
                                           {name: 'src',   value: animal_details['Photo1']}]),
-                create_html_node('div', [ {name: 'id', value: 'photo-links'} ]) ]
-            );
+                create_html_node('div', [ {name: 'id', value: 'photo-links'} ]) 
+            ]);
 
     setup_photo_links(animal_details);
 
@@ -50,7 +50,7 @@ function view_animal(animal_id, plugin_base)
             create_html_node('tr', null, animal_detail_node, [
                 create_html_node('td', null, null, null, "<b>" + field_object.title + "</b>"),
                 create_html_node('td', null, null, null, animal_details[field_object.field_name])  
-            ], null);
+            ]);
         }
     });
 }
@@ -100,17 +100,14 @@ function setup_photo_links(animal_details) {
         //Don't want to output 0, so we add 1 to make it more user friendly.
         var photo_num = i+1;
         var photo_url = animal_details['Photo' + photo_num];
-        var photo_node = document.createElement('input');
-        photo_node.setAttribute("type", "button")
-        photo_node.setAttribute("id", "photo" + photo_num);
-        photo_node.setAttribute("class", "photo-btn btn btn-primary btn-sm");
-        photo_node.setAttribute("value", photo_num);
-
-        //Insert input node into the DOM.
-        photo_output_area.appendChild(photo_node);
-        var picture_element = document.getElementById('photo' + photo_num);
+        var picture_element = create_html_node('input', [ {name: 'type',  value: 'button'},
+                                    {name: 'id',    value: 'photo' + photo_num},
+                                    {name: 'class', value: 'photo-btn btn btn-primary btn-sm'},
+                                    {name: 'value', value: photo_num}],
+                        photo_output_area);
 
         //Finally, add an event listener to switch to the picture when it's button is clicked (using load_photo).
+        //var picture_element = document.getElementById('photo' + photo_num);
         picture_element.addEventListener("click", load_photo.bind(null, photo_url));
     }
 }
