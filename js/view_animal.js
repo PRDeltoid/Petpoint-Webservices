@@ -104,10 +104,9 @@ function setup_photo_links(animal_details) {
                                     {name: 'id',    value: 'photo' + photo_num},
                                     {name: 'class', value: 'photo-btn btn btn-primary btn-sm'},
                                     {name: 'value', value: photo_num}],
-                        photo_output_area);
+                            photo_output_area);
 
         //Finally, add an event listener to switch to the picture when it's button is clicked (using load_photo).
-        //var picture_element = document.getElementById('photo' + photo_num);
         picture_element.addEventListener("click", load_photo.bind(null, photo_url));
     }
 }
