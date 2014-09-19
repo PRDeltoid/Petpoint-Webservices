@@ -53,6 +53,10 @@ function view_animal(animal_id, plugin_base)
             ]);
         }
     });
+    jQuery('sup').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
+        '<b style="color: Green">Green:</b> This animal needs training or has special seeds. Should go to an adult and dog savvy home. <br>' +
+        '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
+        '<b style="color: Purple">Purple:</b> This animal is friendly and trainable. Does well with children or novice pet owners.'});
 }
 
 function create_html_node(node_type, attributes, parent_node, child_nodes, html_content) {
@@ -154,8 +158,9 @@ function format_description(desc) {
 }
 
 function format_be(be_result) {
+    create_html_node
     //Colors the result as the behavior result's color. Also adds a small Superscript link at the end to link to a page where the BE colors are explained
-    return "<span style='font-weight:bold; color: " + be_result + "'>" + be_result + "</span>   <sup><a href='#' target='_blank'>What is this?</a></sup>";
+    return "<span style='font-weight:bold; color: " + be_result + "'>" + be_result + "</span>   <sup title=''><a href='#'>What is this?</a></sup>";
 }
 
 function get_animal_details(requestURL) {
