@@ -28,34 +28,19 @@ function create_animal_detail(animal, view_animal_url) {
     //Format the animals breed. Don't include Mix as a secondary breed (too vague, too cluttered).
     var animal_breed_formatted = format_breed(animal["PrimaryBreed"]);
     
-    var animal_node = document.createElement('div');
-    animal_node.setAttribute("class", "adoptable-animal");
-
-    var animal_picture = document.createElement('img');
-    animal_picture.setAttribute("class", "animal-picture");
-    animal_picture.setAttribute("src", animal["Photo"]);
-    //animal_picture.setAttribute("style", 'border: 3px solid ' + animal["BehaviorResult"]);
-
-    var animal_picture_link = document.createElement('a');
-    animal_picture_link.setAttribute("href", view_animal_url + animal["ID"]);
-    animal_picture_link.appendChild(animal_picture);
-
-    animal_node.appendChild(animal_picture_link);
-
-    var animal_name = document.createElement('a');
-    animal_name.setAttribute("href", view_animal_url + animal["ID"]);
-    animal_name.setAttribute("class", "animal-name");
-    animal_name.innerHTML = animal["Name"];
-
-    animal_node.appendChild(animal_name);
-
-    var animal_breed = document.createElement('p');
-    animal_breed.innerHTML = animal_breed_formatted;
-    var animal_sex = document.createElement('p');
-    animal_sex.innerHTML = animal["Sex"];
-
-    animal_node.appendChild(animal_breed);
-    animal_node.appendChild(animal_sex);
+    var animal_node = create_html_node('div', [{name:'class', value:'adoptable-animal'}], [
+        //The animal's picture node
+        create_html_node('a',   [{name:'href', value:view_animal_url + animal["ID"]}], [
+            create_html_node('img', [{name:'class', value:'animal-picture'},
+                                     {name:'src', value: animal["Photo"]}]) ]),
+        //The animal's name
+        create_html_node('a',   [{name:'href', value: view_animal_url + animal["ID"]},
+                                {name:'class', value: 'animal-name'}], null, animal["Name"]),
+        //Breed
+        create_html_node('p', null, null, animal_breed_formatted),
+        //Sex
+        create_html_node('p', null, null, animal["Sex"]),        
+    ]);
 
     return animal_node;
 }
@@ -77,4 +62,28 @@ function format_breed(breed_string) {
             return output_breed_string;
         }
     }
+}
+
+function create_html_node(node_type, attributes, child_nodes, html_content) {
+
+    var node = document.createElement(node_type);
+    //Set node attributes
+    if(attributes && attributes instanceof Array ){
+        attributes.map(function(attribute) {
+            node.setAttribute(attribute.name, attribute.value);
+        });
+    }
+
+    if(html_content) {
+        node.innerHTML = html_content;
+    }
+
+    //Set up any child nodes (recursive)
+    if(child_nodes) {
+        child_nodes.map(function(child_node) {
+            node.appendChild(child_node);
+        });
+    }
+
+    return node;
 }
