@@ -16,8 +16,14 @@ function pull_animals(view_animal_url, requestURL_In)
             }
             //Insert invidual formatted animal's details as HTML into the final output output_html
             output_area.appendChild(create_animal_detail(animal, view_animal_url));
+
+
             return;
         });
+        jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
+        '<b style="color: Green">Green:</b> This animal needs training or has special seeds. Should go to an adult and dog savvy home. <br>' +
+        '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
+        '<b style="color: Purple">Purple:</b> This animal is friendly and trainable. Does well with children or novice pet owners.'});
     });
 }
 
@@ -36,11 +42,18 @@ function create_animal_detail(animal, view_animal_url) {
         //The animal's name
         create_html_node('a',   [{name:'href', value: view_animal_url + animal["ID"]},
                                 {name:'class', value: 'animal-name'}], null, animal["Name"]),
+        //animal's BE result as a colored circle
+        create_html_node('div', [{name: 'class', value: 'animal-be-result'}, 
+                                {name: 'style', value: 'background-color:' + animal["BehaviorResult"]},
+                                {name: 'title', value: ''}]),
         //Breed
         create_html_node('p', null, null, animal_breed_formatted),
         //Sex
-        create_html_node('p', null, null, animal["Sex"]),        
+        create_html_node('p', null, null, animal["Sex"]),
+        //Age
+        create_html_node('p', null, null, format_age(animal["Age"]))
     ]);
+
 
     return animal_node;
 }
@@ -62,6 +75,14 @@ function format_breed(breed_string) {
             return output_breed_string;
         }
     }
+}
+
+function format_age(age) {
+    var years = Math.floor(age/12) 
+    var months =  Math.floor(age%12);
+
+    //return the age, ignoring years or months if it is set to 0
+    return (years==0 ? "" : ((years>1) ? years + " years " : years + " year ")) + (months==0 ? "" : ((months>1) ? months + " months" : months + " month"));
 }
 
 function create_html_node(node_type, attributes, child_nodes, html_content) {
