@@ -1,4 +1,4 @@
-function view_animal(animal_id, plugin_base) 
+function view_animal(animal_id, plugin_base, page_urls) 
 {
     var requestURL = plugin_base + "/viewanimal.php?id=" + animal_id
 
@@ -23,9 +23,17 @@ function view_animal(animal_id, plugin_base)
         {title: "Desciption", field_name: "Dsc",        type: "desciption"},
         {title: "BE Color", field_name: "BehaviorResult", type: "be"}
     ];
+    if(animal_details['Species'] == 'Dog') {
+        var back_button_url = page_urls.dogs;
+    } else if(animal_details['Species'] == 'Cat') {
+        var back_button_url = page_urls.cats;
+    }
+
+    //Create a back button and insert it before the output_area node. 
+    var back_button = create_html_node('a', [{name: 'href', value: back_button_url}], null, null, 'Back to ' + animal_details['Species'] + 's');
+    output_area.parentNode.insertBefore(back_button, output_area);
 
     //Create the animal's picture element.
-
     var animal_picture_container_node = 
             create_html_node('div', [ {name:'class',  value: 'animal-picture-container'} ], output_area, [
                 create_html_node('img', [ {name: 'class', value: 'view-animal-picture'},

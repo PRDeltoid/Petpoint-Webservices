@@ -56,7 +56,7 @@ function pp_setup_view_animal_page_footer() {
     if(is_page(url_to_postid(get_option('view_animal_page'))))  {
         $animalid = get_query_var('animalid');
         if(!empty($animalid) ) {
-            echo '<script>window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '")</script>';
+            echo '<script>window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '", {cats:"' . get_option('view_cats_page') . '", dogs: "' . get_option('view_dogs_page') . '"})</script>';
         }
     }
 }
