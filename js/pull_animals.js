@@ -7,9 +7,19 @@ function pull_animals(view_animal_url, requestURL_In)
     jQuery.getJSON(requestURL, function(results) {
         var output_area = document.getElementById('animal');
         output_area.innerHTML = "";
-
         //XmlNode is a holdover from the conversion process.
-        results.XmlNode.map(function(animal) {            
+        /*results.sort(function(a,b) {
+            if(typeof a != Object || typeof b != Object) {
+                return 0;
+            }
+            if(a["adoptableSearch"].Age > b["adoptableSearch"].Age) {
+                return -1;
+            } else if(a.adoptableSearch.Age < b.adoptableSearch.Age) {
+                return 1;
+            }
+            return 0;
+        });*/
+        results.map(function(animal) {            
             //Safety check. Make sure there isn't a null node (the last node is usually null)
             if(animal.adoptableSearch == undefined) {
                 return;
@@ -17,11 +27,10 @@ function pull_animals(view_animal_url, requestURL_In)
             //Insert invidual formatted animal's details as HTML into the final output output_html
             output_area.appendChild(create_animal_detail(animal, view_animal_url));
 
-
             return;
         });
         jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
-        '<b style="color: Green">Green:</b> This animal needs training or has special seeds. Should go to an adult and dog savvy home. <br>' +
+        '<b style="color: Green">Green:</b> This animal needs training or has special needs. Should go to an adult and dog savvy home. <br>' +
         '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
         '<b style="color: Purple">Purple:</b> This animal is friendly and trainable. Does well with children or novice pet owners.'});
     });
