@@ -7,28 +7,18 @@ function pull_animals(view_animal_url, requestURL_In)
     jQuery.getJSON(requestURL, function(results) {
         var output_area = document.getElementById('animal');
         output_area.innerHTML = "";
-        //XmlNode is a holdover from the conversion process.
-        /*results.sort(function(a,b) {
-            if(typeof a != Object || typeof b != Object) {
-                return 0;
-            }
-            if(a["adoptableSearch"].Age > b["adoptableSearch"].Age) {
-                return -1;
-            } else if(a.adoptableSearch.Age < b.adoptableSearch.Age) {
-                return 1;
-            }
-            return 0;
-        });*/
-        results.map(function(animal) {            
-            //Safety check. Make sure there isn't a null node (the last node is usually null)
-            if(animal.adoptableSearch == undefined) {
-                return;
-            }
-            //Insert invidual formatted animal's details as HTML into the final output output_html
-            output_area.appendChild(create_animal_detail(animal, view_animal_url));
-
-            return;
+        //Places all objects contained within the results variable into an array, 
+        //so that I can use the default array prototypes map and sort.
+        results = jQuery.map(results, function(value, index) {
+            return [value];
         });
+        //Sort the results by the animal's name
+        results.sort(sort_by_name);
+        //Create the HTML nodes for each animal.
+        results.map(function(animal) {
+            output_area.appendChild(create_animal_detail(animal, view_animal_url));
+        });
+
         jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
         '<b style="color: Green">Green:</b> This animal needs training or has special needs. Should go to an adult and dog savvy home. <br>' +
         '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
@@ -92,6 +82,19 @@ function format_age(age) {
 
     //return the age, ignoring years or months if it is set to 0
     return (years==0 ? "" : ((years>1) ? years + " years " : years + " year ")) + (months==0 ? "" : ((months>1) ? months + " months" : months + " month"));
+}
+
+var sort_by_name = function(a, b) {
+    if(a["adoptableSearch"].Name < b["adoptableSearch"].Name) {
+        return -1;
+    } else if(a["adoptableSearch"].Name > b["adoptableSearch"].Name) {
+        return 1;
+    }
+    return 0;
+}
+
+function sort_by_age() {
+//TODO
 }
 
 function create_html_node(node_type, attributes, child_nodes, html_content) {
