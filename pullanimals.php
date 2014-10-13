@@ -21,7 +21,10 @@
                 $json_puppy = json_encode($xml_puppy);
                 $json_puppy_temp = json_decode($json_puppy, true);
                 $json_return = array_merge($json_puppy_temp["XmlNode"], $json_dog_temp["XmlNode"]);
-                echo json_encode($json_return);
+                $json_return_filtered = array_filter($json_return, "test_for_empty_object");
+                echo json_encode($json_return_filtered);
+                #echo var_dump($json_return_filtered);
+                #echo json_encode($json_return);
             } else if($_GET['type']=="cat") {
                 header('Content-type: application/json');
                 $xml_string = file_get_contents('http://www.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=2&sex=A&ageGroup=ALL&location=Cattery&site=Adoptions&onHold=no&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
@@ -33,6 +36,15 @@
             }
         } else {
             echo "No type set";
+        }
+    }
+
+
+    function test_for_empty_object($object) {
+        if(count($object) == 0) {
+            return false;
+        } else {
+            return true;
         }
     }
 ?>
