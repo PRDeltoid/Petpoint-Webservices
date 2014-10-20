@@ -3,7 +3,6 @@ function pull_animals(view_animal_url, requestURL_In)
     //API request URL (locally hosted PHP file that pulls from Petango)
     var requestURL = requestURL_In;
 
-
     jQuery.getJSON(requestURL, function(results) {
         var output_area = document.getElementById('animal');
         output_area.innerHTML = "";
@@ -15,9 +14,7 @@ function pull_animals(view_animal_url, requestURL_In)
         //Sort the results by the animal's name
         results.sort(sort_by_name);
         //Create the HTML nodes for each animal.
-        results.map(function(animal) {
-            output_area.appendChild(create_animal_detail(animal, view_animal_url));
-        });
+        render_animals_html(results, output_area, view_animal_url);
 
         jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
         '<b style="color: Green">Green:</b> This animal needs training or has special needs. Should go to an adult and dog savvy home. <br>' +
@@ -93,12 +90,22 @@ var sort_by_name = function(a, b) {
     return 0;
 }
 
-function sort_by_age() {
-//TODO
+var sort_by_age = function(a, b) {
+    if(a["adoptableSearch"].Age < b["adoptableSearch"].Age) {
+        return -1;
+    } else if(a["adoptableSearch"].Age > b["adoptableSearch"].Age) {
+        return 1;
+    }
+    return 0;
+}
+
+function render_animals_html(results, output_area, view_animal_url) {
+    results.map(function(animal) {
+        output_area.appendChild(create_animal_detail(animal, view_animal_url));
+    });
 }
 
 function create_html_node(node_type, attributes, child_nodes, html_content) {
-
     var node = document.createElement(node_type);
     //Set node attributes
     if(attributes && attributes instanceof Array ){
