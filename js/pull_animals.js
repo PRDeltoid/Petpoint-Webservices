@@ -1,4 +1,34 @@
-function pull_animals(view_animal_url, requestURL_In)
+var global_results;
+
+function setup_sort_links(view_animal_url) {
+    var button_area = document.getElementById('animal').parentNode;
+    var output_area = document.getElementById('animal');
+
+    create_sort_button(button_area, "Sort by Age", 'sort_by_age', sort_by_age, view_animal_url, output_area); 
+    //TODO: Convert all sort buttons to this function. Also, clean up the function so that it requires fewer parameters.
+
+    //button_area.insertBefore(create_html_node('button', [{name: 'id', value: 'sort_by_age'}], null, "Sort by Age"), output_area);
+    button_area.insertBefore(create_html_node('button', [{name: 'id', value: 'sort_by_breed'}], null, "Sort by Breed"), output_area);
+    button_area.insertBefore(create_html_node('button', [{name: 'id', value: 'sort_by_name'}], null, "Sort by Name"), output_area);
+
+    /*jQuery('#sort_by_age').click(function() {
+        output_area.innerHTML = "";
+        global_results.sort(sort_by_age);
+        render_animals_html(global_results, output_area, view_animal_url);
+    });*/
+    jQuery('#sort_by_name').click(function() {
+        output_area.innerHTML = "";
+        global_results.sort(sort_by_name);
+        render_animals_html(global_results, output_area, view_animal_url);
+    });
+    jQuery('#sort_by_breed').click(function() {
+        output_area.innerHTML = "";
+        global_results.sort(sort_by_breed);
+        render_animals_html(global_results, output_area, view_animal_url);
+    });
+}
+
+function pull_animals(view_animal_url, requestURL_In, sort_func)
 {
     //API request URL (locally hosted PHP file that pulls from Petango)
     var requestURL = requestURL_In;
@@ -6,20 +36,23 @@ function pull_animals(view_animal_url, requestURL_In)
     jQuery.getJSON(requestURL, function(results) {
         var output_area = document.getElementById('animal');
         output_area.innerHTML = "";
+        
         //Places all objects contained within the results variable into an array, 
         //so that I can use the default array prototypes map and sort.
-        results = jQuery.map(results, function(value, index) {
-            return [value];
-        });
+        results = convert_results_to_array(results);
+
+        //Createa a global results variable using the sorted results array
+        global_results = results;
+        console.log(global_results);
+
         //Sort the results by the animal's name
-        results.sort(sort_by_name);
+        results.sort(sort_func);
+
         //Create the HTML nodes for each animal.
         render_animals_html(results, output_area, view_animal_url);
 
-        jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
-        '<b style="color: Green">Green:</b> This animal needs training or has special needs. Should go to an adult and dog savvy home. <br>' +
-        '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
-        '<b style="color: Purple">Purple:</b> This animal is friendly and trainable. Does well with children or novice pet owners.'});
+        //Generate the behavior result tooltips.
+        generate_tooltips();
     });
 }
 
@@ -91,12 +124,21 @@ var sort_by_name = function(a, b) {
 }
 
 var sort_by_age = function(a, b) {
-    if(a["adoptableSearch"].Age < b["adoptableSearch"].Age) {
+    var age_a = parseInt(a["adoptableSearch"].Age);
+    var age_b = parseInt(b["adoptableSearch"].Age);
+    if(age_a < age_b) {
         return -1;
-    } else if(a["adoptableSearch"].Age > b["adoptableSearch"].Age) {
+    } else if(age_a > age_b) {
         return 1;
     }
-    return 0;
+}
+
+var sort_by_breed = function(a, b) {
+    if(a["adoptableSearch"].PrimaryBreed < b["adoptableSearch"].PrimaryBreed) {
+        return -1;
+    } else if(a["adoptableSearch"].PrimaryBreed > b["adoptableSearch"].PrimaryBreed) {
+        return 1;
+    }
 }
 
 function render_animals_html(results, output_area, view_animal_url) {
@@ -126,4 +168,28 @@ function create_html_node(node_type, attributes, child_nodes, html_content) {
     }
 
     return node;
+}
+
+function create_sort_button(button_area, button_name, button_id, sort_func, view_animal_url, output_area) {
+    button_area.insertBefore(create_html_node('button', [{name: 'id', value: button_id}], null, button_name), output_area);
+    jQuery('#' + button_id).click(function() {
+        output_area.innerHTML = "";
+        global_results.sort(sort_func);
+        render_animals_html(global_results, output_area, view_animal_url);
+    });
+
+}
+
+function convert_results_to_array(results) {
+    results = jQuery.map(results, function(value, index) {
+        return [value];
+    });
+    return results;
+}
+
+function generate_tooltips() {
+    jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
+    '<b style="color: Green">Green:</b> This animal needs training or has special needs. Should go to an adult and dog savvy home. <br>' +
+    '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
+    '<b style="color: Purple">Purple:</b> This animal is friendly and trainable. Does well with children or novice pet owners.'});
 }
