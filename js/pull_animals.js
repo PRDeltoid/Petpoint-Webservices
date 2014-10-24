@@ -22,7 +22,7 @@ function pull_animals(view_animal_url, requestURL_In, sort_func)
         //so that I can use the default array prototypes map and sort.
         results = convert_results_to_array(results);
 
-        //Createa a global results variable using the sorted results array
+        //Create a global results variable using the sorted results array
         global_results = results;
         console.log(global_results);
 
@@ -32,8 +32,6 @@ function pull_animals(view_animal_url, requestURL_In, sort_func)
         //Create the HTML nodes for each animal.
         render_animals_html(results, output_area, view_animal_url);
 
-        //Generate the behavior result tooltips.
-        generate_tooltips();
     });
 }
 
@@ -126,6 +124,8 @@ function render_animals_html(results, output_area, view_animal_url) {
     results.map(function(animal) {
         output_area.appendChild(create_animal_detail(animal, view_animal_url));
     });
+    //Generate the behavior result tooltips.
+    generate_tooltips();
 }
 
 function create_html_node(node_type, attributes, child_nodes, html_content) {
