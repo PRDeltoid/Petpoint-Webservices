@@ -41,15 +41,12 @@ function pp_setup_view_adoptable_page() {
     if (is_page(url_to_postid(get_option('view_cats_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=cat';
          echo '<script type="text/javascript">
-                    window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name)
+                    window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name, "sort_by_name")
                 </script>';
     } else if(is_page(url_to_postid(get_option('view_dogs_page')))) {
          $requestURL = $plugin_base . '/pullanimals.php?type=dog';
          echo '<script type="text/javascript">
-             window.onload = function() {
-                    pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name)
-                    setup_sort_links("' . $view_animal_link . '");
-                }
+                     window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name, "sort_by_name");
                 </script>';
     }
 }
