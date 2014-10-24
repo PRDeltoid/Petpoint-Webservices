@@ -29,6 +29,8 @@ function create_animal_detail(animal, view_animal_url) {
     var animal = animal.adoptableSearch; //Sets the animal variable to be easier to read. 
    
     var animal_breed_formatted = format_breed(animal["PrimaryBreed"]); //Format the animals breed (removes 'Mix' breed).
+
+    var animal_name_formatted = format_name(animal["Name"]);
     
     var animal_node = create_html_node('div', [{name:'class', value:'adoptable-animal'}], [
         //The animal's picture and picture link nodes
@@ -37,7 +39,7 @@ function create_animal_detail(animal, view_animal_url) {
                                      {name:'src',   value: animal["Photo"]}]) ]),
         //The animal's name
         create_html_node('a',   [{name:'href',  value: view_animal_url + animal["ID"]},
-                                 {name:'class', value: 'animal-name'}], null, animal["Name"]),
+                                 {name:'class', value: 'animal-name'}], null, animal_name_formatted),
         //animal's BE result as a colored circle
         create_html_node('div', [{name: 'class', value: 'animal-be-result'}, 
                                  {name: 'style', value: 'background-color:' + animal["BehaviorResult"]},
@@ -147,21 +149,21 @@ function toggle_sort_button(sort_name) {
 }
 
 function format_breed(breed_string) {
-    var split_string = breed_string.split(", ");
-    split_string.reverse();
-    output_breed_string = split_string.join(" ");
-    if(output_breed_string == "") {
-        if(breed_string.length > 22) {
-            return breed_string.substr(0,22) + "..";
-        } else {
-            return breed_string;
-        }
+    //Breed string is in format "Chihuahua, Short Haired" or just "Yorkshire Terrier"
+
+    var split_string = breed_string.split(", "); //Create an array containing the animals breed split on the comma ([Chihuahua, Short Haired])
+    
+    split_string.reverse(); //Reverse the array of names ([Short Haired, Chihuahua])
+    output_breed_string = split_string.join(" "); //Rejoin the array with a space ("Short Haired Chihuahua")
+
+    if(output_breed_string == "") {  
+        output_breed_string = breed_string; //Assigns the original passed value if the formatted breed string is empty (there was no comma).
+    }
+    
+    if(output_breed_string.length > 22) {
+            return output_breed_string.substr(0,24) + "..";  //Chop the breed string at the 22nd character, then add a ".." to the end
     } else {
-        if(breed_string.length > 22) {
-            return output_breed_string.substr(0,24) + "..";
-        } else {
-            return output_breed_string;
-        }
+            return output_breed_string; //If the breed string is below 22 characters, just return it unchanged.
     }
 }
 
@@ -171,6 +173,14 @@ function format_age(age) {
 
     //return the age, ignoring years or months if it is set to 0
     return (years==0 ? "" : ((years>1) ? years + " years " : years + " year ")) + (months==0 ? "" : ((months>1) ? months + " months" : months + " month"));
+}
+
+function format_name(name) {
+    if(name.length > 18) {
+        return name.substr(0,18) + "..";
+    } else {
+        return name;
+    }
 }
 
 var sort_by_name = function(a, b) {
