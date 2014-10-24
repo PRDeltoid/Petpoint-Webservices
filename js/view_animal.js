@@ -150,7 +150,8 @@ function format_age(age) {
     var months =  Math.floor(age%12);
 
     //return the age, ignoring years or months if it is set to 0
-    return (years==0 ? "" : years + "y ") + (months==0 ? "" : months +"m");
+    return (years==0 ? "" : ((years>1) ? years + " years " : years + " year ")) + (months==0 ? "" : ((months>1) ? months + " months" : months + " month"));
+    //return (years==0 ? "" : years + "y ") + (months==0 ? "" : months +"m");
 }
 
 function format_breed(breed) {

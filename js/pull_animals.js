@@ -1,17 +1,15 @@
-var global_results;
-var results_pulled = false;
-var global_view_animal_url;
+var global_results;         //pulled animal results, made globally available for other functions
+var global_view_animal_url; //URL to the View Animal page, made globally available
 
 function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name)
 {
     var requestURL = requestURL_In; //API request URL (locally hosted PHP file that pulls from Petango)
     
-    global_view_animal_url = view_animal_url;
+    global_view_animal_url = view_animal_url; //Assign the passed animal url to a global version for use in other functions
 
-    jQuery.getJSON(requestURL, function(results) {
-        results_pulled = true;
-        var output_area = document.getElementById('animal');
-        output_area.innerHTML = "";
+    jQuery.getJSON(requestURL, function(results) {  //Request the animal's data as a JSON object.
+        var output_area = document.getElementById('animal'); //find the output area based on the id 'animal'
+        output_area.innerHTML = "";     //Reset the output area's html.
         
         results = convert_results_to_array(results); //Places resuls into an array, giving access to prototypes map and sort.
         
@@ -22,7 +20,7 @@ function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name)
         render_animals_html(results, output_area, view_animal_url); //Create the HTML nodes for each animal.
 
         setup_sort_buttons(view_animal_url); //Setup the sorting links.
-        toggle_sort_button(sort_name);
+        toggle_sort_button(sort_name);       //Toggle the button for the initially sorted type
     });
 }
 
@@ -34,9 +32,9 @@ function create_animal_detail(animal, view_animal_url) {
     
     var animal_node = create_html_node('div', [{name:'class', value:'adoptable-animal'}], [
         //The animal's picture and picture link nodes
-        create_html_node('a',   [{name:'href', value:view_animal_url + animal["ID"]}], [
+        create_html_node('a', [{name:'href',      value:view_animal_url + animal["ID"]}], [
             create_html_node('img', [{name:'class', value:'animal-picture'},
-                                     {name:'src', value: animal["Photo"]}]) ]),
+                                     {name:'src',   value: animal["Photo"]}]) ]),
         //The animal's name
         create_html_node('a',   [{name:'href',  value: view_animal_url + animal["ID"]},
                                  {name:'class', value: 'animal-name'}], null, animal["Name"]),
@@ -103,16 +101,17 @@ function generate_tooltips() {
 
 function create_sort_button(button_area, button_name, button_id, sort_func, output_area) {
     button_area.insertBefore(create_html_node('button', 
-                                            [{name: 'id', value: button_id},
-                                             {name: 'sort_order', value: 'asc'}], 
+                                            [{name: 'id',         value: button_id},
+                                             {name: 'sort_order', value: 'asc'},
+                                             {name: 'class',      value: 'btn btn-primary'}], 
                                              null, button_name), 
                             output_area);
     jQuery('#' + button_id).click(function() {
-        var sort_order = jQuery(this).attr('sort_order');
+        var sort_order = jQuery(this).attr('sort_order'); //Get sort order as 'asc' (ascending) and 'dsc' (descending)
         output_area.innerHTML = "";
-        global_results.sort(sort_func);
+        global_results.sort(sort_func); //sort the results based on the provided sort function
         if(sort_order == 'dsc') {
-            global_results.reverse();
+            global_results.reverse(); //Reverse the results after sorting to make the results sorted in Descending order
         }
         render_animals_html(global_results, output_area, global_view_animal_url);
         toggle_sort_button(button_id);
@@ -123,9 +122,9 @@ function setup_sort_buttons(view_animal_url) {
     var button_area = document.getElementById('animal').parentNode;
     var output_area = document.getElementById('animal');
 
-    create_sort_button(button_area, "Sort by Age (asc)", 'sort_by_age', sort_by_age, output_area); 
-    create_sort_button(button_area, "Sort by Breed (asc)", 'sort_by_breed', sort_by_breed, output_area); 
-    create_sort_button(button_area, "Sort by Name (asc)", 'sort_by_name', sort_by_name, output_area); 
+    create_sort_button(button_area, "Sort by Age &#8593;",   'sort_by_age',   sort_by_age,   output_area); 
+    create_sort_button(button_area, "Sort by Breed &#8593;", 'sort_by_breed', sort_by_breed, output_area); 
+    create_sort_button(button_area, "Sort by Name &#8593;",  'sort_by_name',  sort_by_name,  output_area); 
 }
 
 function toggle_sort_button(sort_name) {
@@ -133,10 +132,10 @@ function toggle_sort_button(sort_name) {
    var button_text = sort_button.html();
 
    if(sort_button.attr('sort_order') == 'asc') {         //If sort_order is currently ascending, set it to descending
-       button_text = button_text.replace('asc', 'dsc');
+       button_text = button_text.replace('↑', '↓');
        sort_button.attr('sort_order', 'dsc');
    } else if (sort_button.attr('sort_order') == 'dsc') { //If sort_order is currently descending, set it to ascending
-       button_text = button_text.replace('dsc', 'asc');
+       button_text = button_text.replace('↓', '↑');
        sort_button.attr('sort_order', 'asc');
    }
    sort_button.html(button_text);

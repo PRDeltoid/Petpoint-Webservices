@@ -54,3 +54,7 @@
     text-decoration: none;
 }
 
+.btn-primary {
+    margin-right: 10px !important;
+}
+
