@@ -32,7 +32,7 @@ function create_animal_detail(animal, view_animal_url) {
     
     var animal_node = create_html_node('div', [{name:'class', value:'adoptable-animal'}], [
         //The animal's picture and picture link nodes
-        create_html_node('a', [{name:'href',      value:view_animal_url + animal["ID"]}], [
+        create_html_node('a',   [{name:'href',      value:view_animal_url + animal["ID"]}], [
             create_html_node('img', [{name:'class', value:'animal-picture'},
                                      {name:'src',   value: animal["Photo"]}]) ]),
         //The animal's name
@@ -128,8 +128,13 @@ function setup_sort_buttons(view_animal_url) {
 }
 
 function toggle_sort_button(sort_name) {
-   var sort_button = jQuery('#' + sort_name);
-   var button_text = sort_button.html();
+    var sort_button = jQuery('#' + sort_name);
+    var button_text = sort_button.html();
+
+    var last_active_button = jQuery('.active');
+    last_active_button.removeClass('active'); //Remove the active class from the last selected button
+
+    sort_button.addClass('active');           //Add the active class to the newly selected button
 
    if(sort_button.attr('sort_order') == 'asc') {         //If sort_order is currently ascending, set it to descending
        button_text = button_text.replace('↑', '↓');
