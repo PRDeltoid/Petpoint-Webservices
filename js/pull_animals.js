@@ -5,27 +5,8 @@ function setup_sort_links(view_animal_url) {
     var output_area = document.getElementById('animal');
 
     create_sort_button(button_area, "Sort by Age", 'sort_by_age', sort_by_age, view_animal_url, output_area); 
-    //TODO: Convert all sort buttons to this function. Also, clean up the function so that it requires fewer parameters.
-
-    //button_area.insertBefore(create_html_node('button', [{name: 'id', value: 'sort_by_age'}], null, "Sort by Age"), output_area);
-    button_area.insertBefore(create_html_node('button', [{name: 'id', value: 'sort_by_breed'}], null, "Sort by Breed"), output_area);
-    button_area.insertBefore(create_html_node('button', [{name: 'id', value: 'sort_by_name'}], null, "Sort by Name"), output_area);
-
-    /*jQuery('#sort_by_age').click(function() {
-        output_area.innerHTML = "";
-        global_results.sort(sort_by_age);
-        render_animals_html(global_results, output_area, view_animal_url);
-    });*/
-    jQuery('#sort_by_name').click(function() {
-        output_area.innerHTML = "";
-        global_results.sort(sort_by_name);
-        render_animals_html(global_results, output_area, view_animal_url);
-    });
-    jQuery('#sort_by_breed').click(function() {
-        output_area.innerHTML = "";
-        global_results.sort(sort_by_breed);
-        render_animals_html(global_results, output_area, view_animal_url);
-    });
+    create_sort_button(button_area, "Sort by Breed", 'sort_by_breed', sort_by_breed, view_animal_url, output_area); 
+    create_sort_button(button_area, "Sort by Name", 'sort_by_name', sort_by_name, view_animal_url, output_area); 
 }
 
 function pull_animals(view_animal_url, requestURL_In, sort_func)
