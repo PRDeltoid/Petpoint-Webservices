@@ -23,14 +23,21 @@
                 $json_return = array_merge($json_puppy_temp["XmlNode"], $json_dog_temp["XmlNode"]);
                 $json_return_filtered = array_filter($json_return, "test_for_empty_object");
                 echo json_encode($json_return_filtered);
-                #echo var_dump($json_return_filtered);
-                #echo json_encode($json_return);
             } else if($_GET['type']=="cat") {
                 header('Content-type: application/json');
-                $xml_string = file_get_contents('http://www.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=2&sex=A&ageGroup=ALL&location=Cattery&site=Adoptions&onHold=no&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
-                $xml = simplexml_load_string($xml_string);
-                $json = json_encode($xml);
-                echo $json;
+                $xml_cat_string = file_get_contents('http://www.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=2&sex=A&ageGroup=ALL&location=Cattery&site=Adoptions&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
+                $xml_cat = simplexml_load_string($xml_cat_string);
+                $json_cat = json_encode($xml_cat);
+                $json_cat_temp = json_decode($json_cat, true);
+
+                $xml_kitten_string = file_get_contents('http://www.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=2&sex=A&ageGroup=ALL&location=Kittery&site=Adoptions&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
+                $xml_kitten = simplexml_load_string($xml_kitten_string);
+                $json_kitten = json_encode($xml_kitten);
+                $json_kitten_temp = json_decode($json_kitten, true);
+
+                $json_return = array_merge($json_kitten_temp["XmlNode"], $json_cat_temp["XmlNode"]);
+                $json_return_filtered = array_filter($json_return, "test_for_empty_object");
+                echo json_encode($json_return_filtered);
             } else {
                 echo "Unknown type set";
             }

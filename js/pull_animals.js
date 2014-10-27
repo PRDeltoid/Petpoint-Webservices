@@ -12,6 +12,7 @@ function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name)
         output_area.innerHTML = "";     //Reset the output area's html.
         
         results = convert_results_to_array(results); //Places resuls into an array, giving access to prototypes map and sort.
+
         
         global_results = results; //Create a global results variable using the sorted results array 
 
@@ -56,12 +57,19 @@ function create_animal_detail(animal, view_animal_url) {
     return animal_node;
 }
 
+function get_animal_type(results) {
+    return results[0].adoptableSearch.AnimalType;
+}
+
 function render_animals_html(results, output_area, view_animal_url) {
     results.map(function(animal) {
         output_area.appendChild(create_animal_detail(animal, view_animal_url));
     });
-    //Generate the behavior result tooltips.
-    generate_tooltips();
+    
+    //Generate the behavior result tooltips only for dogs.
+    if(get_animal_type(results) == "Dog") {
+        generate_tooltips();
+    }
 }
 
 function create_html_node(node_type, attributes, child_nodes, html_content) {
