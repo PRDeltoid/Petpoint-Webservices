@@ -28,6 +28,8 @@ function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name)
 function create_animal_detail(animal, view_animal_url) {
 
     var animal = animal.adoptableSearch; //Sets the animal variable to be easier to read. 
+
+    var animal_be = animal.BehaviorResult;
    
     var animal_breed_formatted = format_breed(animal["PrimaryBreed"]); //Format the animals breed (removes 'Mix' breed).
 
@@ -41,10 +43,10 @@ function create_animal_detail(animal, view_animal_url) {
         //The animal's name
         create_html_node('a',   [{name:'href',  value: view_animal_url + animal["ID"]},
                                  {name:'class', value: 'animal-name'}], null, animal_name_formatted),
-        //animal's BE result as a colored circle
-        create_html_node('div', [{name: 'class', value: 'animal-be-result'}, 
-                                 {name: 'style', value: 'background-color:' + animal["BehaviorResult"]},
-                                 {name: 'title', value: ''}]),
+        //animal's BE result as a colored circle. Returns null if the BE result does not exist.
+        animal_be != "" ? create_html_node('div', [{name: 'class', value: 'animal-be-result'}, 
+                                 {name: 'style', value: 'background-color:' + animal_be},
+                                 {name: 'title', value: ''}]) : null,
         //Breed
         create_html_node('p', null, null, animal_breed_formatted),
         //Sex
@@ -88,7 +90,9 @@ function create_html_node(node_type, attributes, child_nodes, html_content) {
     //Set up any child nodes (recursive)
     if(child_nodes) {
         child_nodes.map(function(child_node) {
-            node.appendChild(child_node);
+            if(child_node != null) {  //Skip null nodes.
+                node.appendChild(child_node);
+            }
         });
     }
 
@@ -142,6 +146,7 @@ function toggle_sort_button(sort_name) {
     var button_text = sort_button.html();
 
     var last_active_button = jQuery('.active');
+
     last_active_button.removeClass('active'); //Remove the active class from the last selected button
 
     sort_button.addClass('active');           //Add the active class to the newly selected button
