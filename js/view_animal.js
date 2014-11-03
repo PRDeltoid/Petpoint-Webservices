@@ -66,6 +66,8 @@ function view_animal(animal_id, plugin_base, page_urls)
         '<b style="color: Green">Green:</b> This animal needs training or has special needs. Should go to an adult and dog savvy home. <br>' +
         '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
         '<b style="color: Purple">Purple:</b> This animal is friendly and trainable. Does well with children or novice pet owners.'});
+
+    document.title = animal_details["AnimalName"] + " - View Animal | Sacramento SPCA"
 }
 
 function create_html_node(node_type, attributes, parent_node, child_nodes, html_content) {
