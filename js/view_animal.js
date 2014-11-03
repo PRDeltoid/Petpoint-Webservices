@@ -20,6 +20,7 @@ function view_animal(animal_id, plugin_base, page_urls)
         {title: "Age",      field_name: "Age",          type: "age"},
         {title: "Sex",      field_name: "Sex"},
         {title: "Weight",   field_name: "BodyWeight"},
+        {title: "Location",   field_name: "Location"},
         {title: "Desciption", field_name: "Dsc",        type: "desciption"},
         {title: "BE Color", field_name: "BehaviorResult", type: "be"}
     ];
