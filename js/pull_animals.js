@@ -116,11 +116,12 @@ function generate_tooltips() {
 function create_sort_button(button_area, button_name, button_id, sort_func, output_area) {
     button_area.insertBefore(create_html_node('button', 
                                             [{name: 'id',         value: button_id},
-                                             {name: 'sort_order', value: 'asc'},
+                                             {name: 'sort_order', value: ''},
                                              {name: 'class',      value: 'btn btn-primary'}], 
                                              null, button_name), 
                             output_area);
     jQuery('#' + button_id).click(function() {
+        toggle_sort_button(button_id);
         var sort_order = jQuery(this).attr('sort_order'); //Get sort order as 'asc' (ascending) and 'dsc' (descending)
         output_area.innerHTML = "";
         global_results.sort(sort_func); //sort the results based on the provided sort function
@@ -128,7 +129,6 @@ function create_sort_button(button_area, button_name, button_id, sort_func, outp
             global_results.reverse(); //Reverse the results after sorting to make the results sorted in Descending order
         }
         render_animals_html(global_results, output_area, global_view_animal_url);
-        toggle_sort_button(button_id);
     });
 }
 
@@ -136,29 +136,40 @@ function setup_sort_buttons(view_animal_url) {
     var button_area = document.getElementById('animal').parentNode;
     var output_area = document.getElementById('animal');
 
-    create_sort_button(button_area, "Sort by Age &#8593;",   'sort_by_age',   sort_by_age,   output_area); 
-    create_sort_button(button_area, "Sort by Breed &#8593;", 'sort_by_breed', sort_by_breed, output_area); 
-    create_sort_button(button_area, "Sort by Name &#8593;",  'sort_by_name',  sort_by_name,  output_area); 
+    create_sort_button(button_area, "Sort by Age",   'sort_by_age',   sort_by_age,   output_area); 
+    create_sort_button(button_area, "Sort by Breed", 'sort_by_breed', sort_by_breed, output_area); 
+    create_sort_button(button_area, "Sort by Name",  'sort_by_name',  sort_by_name,  output_area); 
 }
 
-function toggle_sort_button(sort_name) {
-    var sort_button = jQuery('#' + sort_name);
+function toggle_sort_button(sort_button_name) {
+    var sort_button = jQuery('#' + sort_button_name);
     var button_text = sort_button.html();
 
-    var last_active_button = jQuery('.active');
-
-    last_active_button.removeClass('active'); //Remove the active class from the last selected button
-
-    sort_button.addClass('active');           //Add the active class to the newly selected button
-
-   if(sort_button.attr('sort_order') == 'asc') {         //If sort_order is currently ascending, set it to descending
-       button_text = button_text.replace('↑', '↓');
-       sort_button.attr('sort_order', 'dsc');
-   } else if (sort_button.attr('sort_order') == 'dsc') { //If sort_order is currently descending, set it to ascending
-       button_text = button_text.replace('↓', '↑');
+    if(sort_button.hasClass('active')) {  //If the clicked button was already active, switch the sort order from asc/dsc or vice versa
+       if(sort_button.attr('sort_order') == 'asc') {         //If sort_order is currently ascending, set it to descending
+           button_text = button_text.replace('↑', '↓');
+           sort_button.attr('sort_order', 'dsc');
+       } else if (sort_button.attr('sort_order') == 'dsc') { //If sort_order is currently descending, set it to ascending
+           button_text = button_text.replace('↓', '↑');
+           sort_button.attr('sort_order', 'asc');
+       }
+       sort_button.html(button_text);
+    } else {                              //If the button was not previously active, activate it and set it to the default (ascending order)
+       var last_active_button = jQuery('.active');  //Find previously active button.
+       if(last_active_button.length != 0) {         //If there was a previously active button, remove the arrow and the active class from it.
+           var last_active_html = last_active_button.html();
+           last_active_html = last_active_html.replace('↑', ' '); //Remove the arrow from the previously active button
+           last_active_html = last_active_html.replace('↓', ' ');
+           last_active_button.removeClass('active');
+           last_active_button.attr('sort_order', '');
+           last_active_button.html(last_active_html);
+       }
+       //Setting the defaults
+       sort_button.addClass('active')
        sort_button.attr('sort_order', 'asc');
-   }
-   sort_button.html(button_text);
+       button_text = button_text + ' ↑';
+       sort_button.html(button_text);
+    }
 }
 
 function format_breed(breed_string) {
