@@ -25,8 +25,8 @@
 }
 
 .animal-picture {
-    width: 175px;
-    height: 175px;
+    width: 175px !important;
+    height: 175px !important;
     border: 3px solid #BE9969;
 }
 
@@ -38,7 +38,7 @@
     width: 700px;
 }
 .adoptable-animal {
-    width: 150px;
+    width: 175px;
     margin-right:20px;
     margin-top: 10px;
     float: left;

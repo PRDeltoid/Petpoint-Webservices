@@ -193,7 +193,6 @@ function format_description(desc) {
 }
 
 function format_be(be_result) {
-    create_html_node
     //Colors the result as the behavior result's color. Also adds a small Superscript link at the end to link to a page where the BE colors are explained
     return "<span style='font-weight:bold; color: " + be_result + "'>" + be_result + "</span>   <sup title=''><a href='#'>What is this?</a></sup>";
 }
