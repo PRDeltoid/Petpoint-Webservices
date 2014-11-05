@@ -1,50 +1,58 @@
 function view_animal(animal_id, plugin_base, page_urls) 
 {
+    //Build the request URL using the animal's ID
     var requestURL = plugin_base + "/viewanimal.php?id=" + animal_id
 
     //request animal data
     var animal_details = get_animal_details(requestURL);
     
+    //find the output area
     var output_area = document.getElementById('animal'); //The div element that our HTML will be placed inside of.
 
-    //Fields here will show up on the page. The title is what you want the user to see, and the field_name is the name of the variable in the animal_details object. 
-    /*TYPE CAN ONLY BE ONE OF (case-sensitive): 
-      age: formats age as years/months.
-      breed: formats breed
+    /*Fields here will show up on the page. The title is what you want the user to see, and the field_name is the name of the variable in the animal_details object. 
+    TYPE CAN ONLY BE ONE OF (case-sensitive): 
+      age:         formats age as years/months.
+      breed:       formats breed
       description: removes author initials between ()s and []s
-      be: styles the BE result as the color of the result (A green BE result would style the output as green text). Also adds a subscript 'What is this' link to the end, to explain the meaning of the BE colors.
+      be:          styles the BE result as the color of the result. Adds a subscript 'What is this' link to the end with explination.
     */
     var output_fields = [
-        {title: "Name",     field_name: "AnimalName"}, 
-        {title: "Breed",    field_name: "PrimaryBreed", type: "breed"},
-        {title: "Age",      field_name: "Age",          type: "age"},
-        {title: "Sex",      field_name: "Sex"},
-        {title: "Weight",   field_name: "BodyWeight"},
-        {title: "Location",   field_name: "Location"},
-        {title: "Desciption", field_name: "Dsc",        type: "desciption"},
-        {title: "BE Color", field_name: "BehaviorResult", type: "be"}
+        {title: "Name",         field_name: "AnimalName"}, 
+        {title: "Breed",        field_name: "PrimaryBreed",     type: "breed"},
+        {title: "Age",          field_name: "Age",              type: "age"},
+        {title: "Sex",          field_name: "Sex"},
+        {title: "Weight",       field_name: "BodyWeight"},
+        {title: "Location",     field_name: "Location"},
+        {title: "Desciption",   field_name: "Dsc",              type: "desciption"},
+        {title: "BE Color",     field_name: "BehaviorResult",   type: "be"}
     ];
-    if(animal_details['Species'] == 'Dog') {
+
+    //Generate the Back to Dogs/Cats link above the animal's details.
+    generate_back_button(animal_details['Species'], page_urls, output_area);
+
+    //Create the animal's picture element.
+    setup_photo(output_area, animal_detail);
+
+    //Create animal's details in a table
+    generate_fields(output_fields, animal_details, output_area);
+    
+    //Set the page title to the animal's name
+    set_title(animal_details["AnimalName"]);
+}
+
+function generate_back_button(animal_species, page_urls, output_area) {
+    if(animal_species == 'Dog') {
         var back_button_url = page_urls.dogs;
-    } else if(animal_details['Species'] == 'Cat') {
+    } else if(animal_species == 'Cat') {
         var back_button_url = page_urls.cats;
     }
 
     //Create a back button and insert it before the output_area node. 
-    var back_button = create_html_node('a', [{name: 'href', value: back_button_url}], null, null, 'Back to ' + animal_details['Species'] + 's');
+    var back_button = create_html_node('a', [{name: 'href', value: back_button_url}], null, null, 'Back to ' + animal_species + 's');
     output_area.parentNode.insertBefore(back_button, output_area);
+}
 
-    //Create the animal's picture element.
-    var animal_picture_container_node = 
-            create_html_node('div', [ {name:'class',  value: 'animal-picture-container'} ], output_area, [
-                create_html_node('img', [ {name: 'class', value: 'view-animal-picture'},
-                                          {name: 'id',    value: 'animal-picture'},
-                                          {name: 'src',   value: animal_details['Photo1']}]),
-                create_html_node('div', [ {name: 'id', value: 'photo-links'} ]) 
-            ]);
-
-    setup_photo_links(animal_details);
-
+function generate_fields(output_fields, animal_details, output_area) {
     //Create the animal's detail table (this is an empty container at this point).
     var animal_detail_node = create_html_node('table', [{name:'class', value:'animal-detail'}], output_area); 
 
@@ -62,16 +70,20 @@ function view_animal(animal_id, plugin_base, page_urls)
             ]);
         }
     });
+}
+
+function set_title(animal_name) {
+    document.title = animal_name + " - View Animal | Sacramento SPCA";
+}
+
+function generate_tooltips() {
     jQuery('sup').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
         '<b style="color: Green">Green:</b> This animal needs training or has special needs. Should go to an adult and dog savvy home. <br>' +
         '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
         '<b style="color: Purple">Purple:</b> This animal is friendly and trainable. Does well with children or novice pet owners.'});
-
-    document.title = animal_details["AnimalName"] + " - View Animal | Sacramento SPCA"
 }
 
 function create_html_node(node_type, attributes, parent_node, child_nodes, html_content) {
-
     var node = document.createElement(node_type);
     //Set node attributes
     if(attributes) {
@@ -94,13 +106,24 @@ function create_html_node(node_type, attributes, parent_node, child_nodes, html_
     if(parent_node) {
         parent_node.appendChild(node);
     }
-
     return node;
 }
 
 function load_photo(photo_url) {
     var imageElmement = document.getElementById('animal-picture');
     imageElmement.src = photo_url;
+}
+
+function setup_photo(output_area, animal_details) {
+    var animal_picture_container_node = 
+            create_html_node('div', [ {name:'class',  value: 'animal-picture-container'} ], output_area, [
+                create_html_node('img', [ {name: 'class', value: 'view-animal-picture'},
+                                          {name: 'id',    value: 'animal-picture'},
+                                          {name: 'src',   value: animal_details['Photo1']}]),
+                create_html_node('div', [ {name: 'id', value: 'photo-links'} ]) 
+            ]);
+
+    setup_photo_links(animal_details);
 }
 
 function setup_photo_links(animal_details) {
