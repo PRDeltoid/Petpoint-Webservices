@@ -125,13 +125,25 @@ function create_html_node(node_type, attributes, parent_node, child_nodes, html_
 }
 
 function load_photo(photo_url) {
-    var imageElmement = document.getElementById('animal-picture');
-    imageElmement.src = photo_url;
+    var image_element = jQuery('#animal-picture');
+    var loading_spinner = jQuery('.loading');
+    image_element.attr('src', photo_url);
+    image_element.each(function() {
+       if(!this.complete) { //Check if image is cached, run animation if it's not.
+            image_element.css('opacity', 0.3); //Dim the background image
+            loading_spinner.css('display', 'inline'); //Show the spinner
+            jQuery(this).load(function() { //Undo dim and hide spinner when image is loaded
+                loading_spinner.css('display', 'none'); 
+                image_element.css('opacity', 1.0);
+            });
+       }
+    });
 }
 
 function setup_photo(output_area, animal_details) {
     var animal_picture_container_node = 
             create_html_node('div', [ {name:'class',  value: 'animal-picture-container'} ], output_area, [
+                create_html_node('div', [ {name: 'class', value: 'loading'} ]),
                 create_html_node('img', [ {name: 'class', value: 'view-animal-picture'},
                                           {name: 'id',    value: 'animal-picture'},
                                           {name: 'src',   value: animal_details['Photo1']}]),
