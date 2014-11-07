@@ -19,9 +19,13 @@ Once you have all three pages prepared, you must update your settings so the plu
 * For the View Animal pages to work correctly, you MUST refresh your Permalink settings. To do this, go to Settings, then Permalinks, and click "Save Changes". You do not need to make any changes to the settings, simply clicking the button will work.
 
 ### Adding new fields:
-You can add new fields to the View Animals page by editing the Javascript in this plugin (Note: This will be reset if there is an update to the plugin, so keep a backup of all your custom fields). To do this, open up the Wordpress Editor, or connect via FTP to your webhost, and find the file 'js/view\_animal.js'. Open it, and find the line that begins "var output\_fields". Add a new item onto the end of the array of items, with the signature:
-    \{title: \[What you want to display to the user\], field_name: \[name of the field to show \(located below\)\]\}.     
+You can add new fields to the View Animals page by editing the config.json file in this plugin (Note: This will be reset if there is an update to the plugin, so keep a backup of all your custom fields). To do this, open up the Wordpress Editor, or connect via FTP to your webhost, and find the file 'config.json' in the plugin's base folder. Open it, and locate the object "fields". Add a new item onto the end of the array of items, with the signature:
+    \{"title": \[What you want to display to the user\], "field_name": \[name of the field to show \(located below\)\]\}.   
+Make sure to include a comma in between every item (when adding a new item, you'll have to add a comma to the end of the previously last item.)
 If you have done all of this correctly, the page will now show your new field.
+
+### Changing Behavior Evaluation Tooltip descriptions:
+You can also change the Behavior Evaluation descriptions by editing the same 'config.json' file. Open it up the same way as instructed above, and locate the "be\_descriptions" object. Edit the string at the end of the color you would like to change (ie. change the string after "green\_be" to edit the green BE description). This change should be reflected next time you load the page.
 
 #### Accessible Fields:
 *  CompanyID
