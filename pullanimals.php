@@ -20,21 +20,27 @@
                 $xml_puppy= simplexml_load_string($xml_puppy_string);
                 $json_puppy = json_encode($xml_puppy);
                 $json_puppy_temp = json_decode($json_puppy, true);
+
+                #combine the puppies and dogs into one json string
                 $json_return = array_merge($json_puppy_temp["XmlNode"], $json_dog_temp["XmlNode"]);
                 $json_return_filtered = array_filter($json_return, "test_for_empty_object");
                 echo json_encode($json_return_filtered);
             } else if($_GET['type']=="cat") {
                 header('Content-type: application/json');
+
+                #Pull all animals located in cattery
                 $xml_cat_string = file_get_contents('http://www.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=2&sex=A&ageGroup=ALL&location=Cattery&site=Adoptions&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
                 $xml_cat = simplexml_load_string($xml_cat_string);
                 $json_cat = json_encode($xml_cat);
                 $json_cat_temp = json_decode($json_cat, true);
 
+                #Pull all animals located in kittery
                 $xml_kitten_string = file_get_contents('http://www.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=2&sex=A&ageGroup=ALL&location=Kittery&site=Adoptions&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
                 $xml_kitten = simplexml_load_string($xml_kitten_string);
                 $json_kitten = json_encode($xml_kitten);
                 $json_kitten_temp = json_decode($json_kitten, true);
 
+                #combine the cats and kittens into one json string
                 $json_return = array_merge($json_kitten_temp["XmlNode"], $json_cat_temp["XmlNode"]);
                 $json_return_filtered = array_filter($json_return, "test_for_empty_object");
                 echo json_encode($json_return_filtered);

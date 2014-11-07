@@ -1,7 +1,7 @@
 var global_results;         //pulled animal results, made globally available for other functions
 var global_view_animal_url; //URL to the View Animal page, made globally available
 
-function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name)
+function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name, plugin_base)
 {
     var requestURL = requestURL_In;           //API request URL (locally hosted PHP file that pulls from Petango)
     
@@ -17,10 +17,24 @@ function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name)
 
         results.sort(sort_func);              //Sort the results by the animal's name
 
-        render_animals_html(results, output_area, view_animal_url); //Create the HTML nodes for each animal.
+        render_animals_html(results, output_area, view_animal_url, plugin_base); //Create the HTML nodes for each animal.
 
         setup_sort_buttons(view_animal_url); //Setup the sorting links.
         toggle_sort_button(sort_name);       //Toggle the button for the initially sorted type
+    });
+}
+
+function request_configs(plugin_base, request_data) {
+    jQuery.ajax({
+        url: plugin_base + "/config.json",
+        dataType: 'json',
+        async: false,
+        success: function(data) {
+            request_data.be_descriptions = data["be_descriptions"];
+        },
+        error: function(x, text, error) {
+            console.log(error);
+        }
     });
 }
 
@@ -62,7 +76,7 @@ function get_animal_type(results) {
     return results[0].adoptableSearch.AnimalType;
 }
 
-function render_animals_html(results, output_area, view_animal_url) {
+function render_animals_html(results, output_area, view_animal_url, plugin_base) {
     //For each animal, create that animal's details and insert them into the page
     results.map(function(animal) {
         output_area.appendChild(create_animal_detail(animal, view_animal_url));
@@ -70,7 +84,10 @@ function render_animals_html(results, output_area, view_animal_url) {
     
     //Generate the behavior result tooltips only for dogs.
     if(get_animal_type(results) == "Dog") {
-        generate_tooltips();
+        var request_data = {be_descriptions: ""};
+        request_configs(plugin_base, request_data)
+        var be_descriptions = request_data.be_descriptions;
+        generate_tooltips(be_descriptions);
     }
 }
 
@@ -106,11 +123,11 @@ function convert_results_to_array(results) {
     return results;
 }
 
-function generate_tooltips() {
+function generate_tooltips(be_descriptions) {
     jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
-    '<b style="color: Green">Green:</b> This animal needs training or has special needs. Should go to an adult and dog savvy home. <br>' +
-    '<b style="color: Orange">Orange:</b> This animal needs training. Better with older children and people who have owned dogs previously <br>' +
-    '<b style="color: Purple">Purple:</b> This animal is friendly and trainable. Does well with children or novice pet owners.'});
+    '<b style="color: Green">Green:</b>' + be_descriptions["green_be"] + '<br>' +
+    '<b style="color: Orange">Orange:</b>' + be_descriptions["orange_be"] + '<br>' +
+    '<b style="color: Purple">Purple:</b>' + be_descriptions["purple_be"] + '<br>'}); 
 }
 
 function create_sort_button(button_area, button_name, button_id, sort_func, output_area) {
