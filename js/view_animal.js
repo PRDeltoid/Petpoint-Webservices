@@ -73,7 +73,7 @@ function generate_fields(output_fields, animal_details, output_area) {
 }
 
 function set_title(animal_name) {
-    document.title = animal_name + " - View Animal | Sacramento SPCA";
+    document.title = animal_name + " - " + document.title;
 }
 
 function generate_tooltips() {

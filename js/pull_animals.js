@@ -3,20 +3,19 @@ var global_view_animal_url; //URL to the View Animal page, made globally availab
 
 function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name)
 {
-    var requestURL = requestURL_In; //API request URL (locally hosted PHP file that pulls from Petango)
+    var requestURL = requestURL_In;           //API request URL (locally hosted PHP file that pulls from Petango)
     
     global_view_animal_url = view_animal_url; //Assign the passed animal url to a global version for use in other functions
 
     jQuery.getJSON(requestURL, function(results) {  //Request the animal's data as a JSON object.
         var output_area = document.getElementById('animal'); //find the output area based on the id 'animal'
-        output_area.innerHTML = "";     //Reset the output area's html.
+        output_area.innerHTML = "";           //Reset the output area's html.
         
         results = convert_results_to_array(results); //Places resuls into an array, giving access to prototypes map and sort.
-
         
-        global_results = results; //Create a global results variable using the sorted results array 
+        global_results = results;             //Create a global results variable using the sorted results array 
 
-        results.sort(sort_func); //Sort the results by the animal's name
+        results.sort(sort_func);              //Sort the results by the animal's name
 
         render_animals_html(results, output_area, view_animal_url); //Create the HTML nodes for each animal.
 
@@ -64,6 +63,7 @@ function get_animal_type(results) {
 }
 
 function render_animals_html(results, output_area, view_animal_url) {
+    //For each animal, create that animal's details and insert them into the page
     results.map(function(animal) {
         output_area.appendChild(create_animal_detail(animal, view_animal_url));
     });
@@ -119,7 +119,7 @@ function create_sort_button(button_area, button_name, button_id, sort_func, outp
                                              {name: 'sort_order', value: ''},
                                              {name: 'class',      value: 'btn btn-primary'}], 
                                              null, button_name), 
-                            output_area);
+                                            output_area);
     jQuery('#' + button_id).click(function() {
         toggle_sort_button(button_id);
         var sort_order = jQuery(this).attr('sort_order'); //Get sort order as 'asc' (ascending) and 'dsc' (descending)
