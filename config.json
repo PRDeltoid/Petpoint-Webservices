@@ -1,0 +1,17 @@
+{
+    "fields": [
+        {"title": "Name",         "field_name": "AnimalName"}, 
+        {"title": "Breed",        "field_name": "PrimaryBreed",     "type": "breed"},
+        {"title": "Age",          "field_name": "Age",              "type": "age"},
+        {"title": "Sex",          "field_name": "Sex"},
+        {"title": "Weight",       "field_name": "BodyWeight"},
+        {"title": "Location",     "field_name": "Location"},
+        {"title": "Desciption",   "field_name": "Dsc",              "type": "desciption"},
+        {"title": "BE Color",     "field_name": "BehaviorResult",   "type": "be"}
+    ],
+    "be_descriptions": { 
+        "green_be": "This animal needs training or has special needs. Should go to an adult and dog savvy home.",
+        "orange_be": "This animal needs training. Better with older children and people who have owned dogs previously",
+        "purple_be": "This animal is friendly and trainable. Does well with children or novice pet owners."
+    }
+}
