@@ -17,7 +17,7 @@ function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name, plug
 
         results.sort(sort_func);              //Sort the results by the animal's name
 
-        render_animals_html(results, output_area, view_animal_url, plugin_base); //Create the HTML nodes for each animal.
+        render_animals_html(results, output_area, view_animal_url, plugin_base); //Create the HTML nodes for each animal. Also generates tooltips
 
         setup_sort_buttons(view_animal_url); //Setup the sorting links.
         toggle_sort_button(sort_name);       //Toggle the button for the initially sorted type
@@ -86,9 +86,15 @@ function render_animals_html(results, output_area, view_animal_url, plugin_base)
     if(get_animal_type(results) == "Dog") {
         var request_data = {be_descriptions: ""};
         request_configs(plugin_base, request_data)
-        var be_descriptions = request_data.be_descriptions;
-        generate_tooltips(be_descriptions);
+        generate_tooltips(request_data.be_descriptions);
     }
+}
+
+function generate_tooltips(be_descriptions) {
+    jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
+    '<b style="color: Green">Green:</b>' + be_descriptions["green_be"] + '<br>' +
+    '<b style="color: Orange">Orange:</b>' + be_descriptions["orange_be"] + '<br>' +
+    '<b style="color: Purple">Purple:</b>' + be_descriptions["purple_be"] + '<br>'}); 
 }
 
 function create_html_node(node_type, attributes, child_nodes, html_content) {
@@ -121,13 +127,6 @@ function convert_results_to_array(results) {
         return [value];
     });
     return results;
-}
-
-function generate_tooltips(be_descriptions) {
-    jQuery('.animal-be-result').tooltip({content: 'These colors are used to categorize animals by behavior type. <br><br>' +
-    '<b style="color: Green">Green:</b>' + be_descriptions["green_be"] + '<br>' +
-    '<b style="color: Orange">Orange:</b>' + be_descriptions["orange_be"] + '<br>' +
-    '<b style="color: Purple">Purple:</b>' + be_descriptions["purple_be"] + '<br>'}); 
 }
 
 function create_sort_button(button_area, button_name, button_id, sort_func, output_area) {
