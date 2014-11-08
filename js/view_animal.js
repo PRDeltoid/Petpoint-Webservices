@@ -171,8 +171,16 @@ function setup_photo_links(animal_details) {
                                     {name: 'value', value: photo_num}],
                             photo_output_area);
 
+        if(photo_num==1) {
+            jQuery('#photo1').addClass('active');
+        }
+
         //Finally, add an event listener to switch to the picture when it's button is clicked (using load_photo).
         picture_element.addEventListener("click", load_photo.bind(null, photo_url));
+        jQuery('#photo'+photo_num).click(function() {
+            jQuery('.active').removeClass('active');
+            jQuery(this).addClass('active');
+        });
     }
 }
 
