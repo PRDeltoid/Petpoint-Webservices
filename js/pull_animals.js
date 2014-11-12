@@ -1,11 +1,14 @@
 var global_results;         //pulled animal results, made globally available for other functions
 var global_view_animal_url; //URL to the View Animal page, made globally available
+var global_plugin_base;
+var global_configs = null;
 
 function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name, plugin_base)
 {
     var requestURL = requestURL_In;           //API request URL (locally hosted PHP file that pulls from Petango)
     
     global_view_animal_url = view_animal_url; //Assign the passed animal url to a global version for use in other functions
+    global_plugin_base = plugin_base;         //Assign the plugin base to a global variable
 
     jQuery.getJSON(requestURL, function(results) {  //Request the animal's data as a JSON object.
         var output_area = document.getElementById('animal'); //find the output area based on the id 'animal'
@@ -17,25 +20,23 @@ function pull_animals(view_animal_url, requestURL_In, sort_func, sort_name, plug
 
         results.sort(sort_func);              //Sort the results by the animal's name
 
-        render_animals_html(results, output_area, view_animal_url, plugin_base); //Create the HTML nodes for each animal. Also generates tooltips
+        render_animals_html(results, output_area, view_animal_url) //Create the HTML nodes for each animal. Also generates tooltips
 
         setup_sort_buttons(view_animal_url); //Setup the sorting links.
         toggle_sort_button(sort_name);       //Toggle the button for the initially sorted type
     });
 }
 
-function request_configs(plugin_base, request_data) {
-    jQuery.ajax({
-        url: plugin_base + "/config.json",
-        dataType: 'json',
-        async: false,
-        success: function(data) {
-            request_data.be_descriptions = data["be_descriptions"];
-        },
-        error: function(x, text, error) {
-            console.log(error);
-        }
-    });
+//Pull configs, and then return them via a callback (async)
+function request_configs(request_data, callback) {
+    if(global_configs == null) { //If the configs haven't been pulled yet, pull them. 
+        jQuery.getJSON(global_plugin_base + "/config.json", function(data) {
+            global_configs = data;
+            callback(data.be_descriptions);
+        });
+    } else { //Otherwise, return the cached configs
+        callback(global_configs.be_descriptions);
+    }
 }
 
 function create_animal_detail(animal, view_animal_url) {
@@ -76,7 +77,7 @@ function get_animal_type(results) {
     return results[0].adoptableSearch.AnimalType;
 }
 
-function render_animals_html(results, output_area, view_animal_url, plugin_base) {
+function render_animals_html(results, output_area, view_animal_url) {
     //For each animal, create that animal's details and insert them into the page
     results.map(function(animal) {
         output_area.appendChild(create_animal_detail(animal, view_animal_url));
@@ -85,8 +86,9 @@ function render_animals_html(results, output_area, view_animal_url, plugin_base)
     //Generate the behavior result tooltips only for dogs.
     if(get_animal_type(results) == "Dog") {
         var request_data = {be_descriptions: ""};
-        request_configs(plugin_base, request_data)
-        generate_tooltips(request_data.be_descriptions);
+        request_configs(request_data, function(be_descriptions) {
+            generate_tooltips(be_descriptions)  
+        });
     }
 }
 
@@ -144,7 +146,7 @@ function create_sort_button(button_area, button_name, button_id, sort_func, outp
         if(sort_order == 'dsc') {
             global_results.reverse(); //Reverse the results after sorting to make the results sorted in Descending order
         }
-        render_animals_html(global_results, output_area, global_view_animal_url);
+        render_animals_html(global_results, output_area, global_view_animal_url, global_plugin_base);
     });
 }
 
