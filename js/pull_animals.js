@@ -56,7 +56,8 @@ function create_animal_detail(animal, view_animal_url) {
                                      {name:'src',   value: animal["Photo"]}]) ]),
         //The animal's name
         create_html_node('a',   [{name:'href',  value: view_animal_url + animal["ID"]},
-                                 {name:'class', value: 'animal-name'}], null, animal_name_formatted),
+                                 {name:'class', value: 'animal-name'},
+                                 {name:'title', value: animal["Name"]}], null, animal_name_formatted),
         //animal's BE result as a colored circle. Returns null if the BE result does not exist.
         animal_be != "" ? create_html_node('div', [{name: 'class', value: 'animal-be-result'}, 
                                  {name: 'style', value: 'background-color:' + animal_be},
@@ -218,6 +219,7 @@ function format_age(age) {
 }
 
 function format_name(name) {
+    name = name.replace('- Declawed Indoor Only', '');
     if(name.length > 18) {
         return name.substr(0,18) + "..";
     } else {
