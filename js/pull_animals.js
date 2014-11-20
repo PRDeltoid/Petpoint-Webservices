@@ -44,6 +44,8 @@ function create_animal_detail(animal, view_animal_url) {
     var animal = animal.adoptableSearch; //Sets the animal variable to be easier to read. 
 
     var animal_be = animal.BehaviorResult;
+
+    var animal_species = animal.Species;
    
     var animal_breed_formatted = format_breed(animal["PrimaryBreed"]); //Format the animals breed (removes 'Mix' breed).
 
@@ -62,6 +64,8 @@ function create_animal_detail(animal, view_animal_url) {
         animal_be != "" ? create_html_node('div', [{name: 'class', value: 'animal-be-result'}, 
                                  {name: 'style', value: 'background-color:' + animal_be},
                                  {name: 'title', value: ''}]) : null,
+        //Animal Species (will only show if it is not a dog or cat)
+        (animal_species != "Dog" && animal_species != "Cat" && animal_species != "Small&Furry") ? create_html_node('p', null, null, animal_species) : null,
         //Breed
         create_html_node('p', null, null, animal_breed_formatted),
         //Sex
