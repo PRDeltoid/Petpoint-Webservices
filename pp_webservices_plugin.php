@@ -15,7 +15,7 @@ $plugin_base = plugins_url(null, __FILE__);
 function pp_enqueue_scripts_styles() {
     global $plugin_base;
 
-    if (is_page(url_to_postid(get_option('view_cats_page'))) || is_page(url_to_postid(get_option('view_dogs_page')))) {
+    if (is_page(url_to_postid(get_option('view_cats_page'))) || is_page(url_to_postid(get_option('view_dogs_page'))) || is_page(url_to_postid(get_option('view_other_page')))) {
         wp_enqueue_script('pull-animals', $plugin_base . '/js/pull_animals.js', array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-tooltip'));
         enqueue_all_styles();
     }
@@ -46,6 +46,11 @@ function pp_setup_view_adoptable_page() {
                 </script>';
     } else if(is_page(url_to_postid(get_option('view_dogs_page')))) {
          $requestURL = $plugin_base . '/pullanimals.php?type=dog';
+         echo '<script type="text/javascript">
+                     window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name, "sort_by_name", "' . $plugin_base . '");
+                </script>';
+    } else if(is_page(url_to_postid(get_option('view_other_page')))) {
+        $requestURL = $plugin_base . '/pullanimals.php?type=other';
          echo '<script type="text/javascript">
                      window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name, "sort_by_name", "' . $plugin_base . '");
                 </script>';

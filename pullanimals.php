@@ -44,6 +44,16 @@
                 $json_return = array_merge($json_kitten_temp["XmlNode"], $json_cat_temp["XmlNode"]);
                 $json_return_filtered = array_filter($json_return, "test_for_empty_object");
                 echo json_encode($json_return_filtered);
+            } else if($_GET['type']=="other") { #Pull all animals located in small animal room 
+                header('Content-type: application/json');
+                
+                $xml_other_string = file_get_contents('http://www.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=0&sex=A&ageGroup=ALL&location=Small%20Animals&site=Adoptions&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
+                $xml_other = simplexml_load_string($xml_other_string);
+                $json_other = json_encode($xml_other);
+                $json_other_temp = json_decode($json_other, true);
+                $json_return = array_merge($json_other_temp["XmlNode"]);
+                $json_return_filtered = array_filter($json_return, "test_for_empty_object");
+                echo json_encode($json_return_filtered);
             } else {
                 echo "Unknown type set";
             }

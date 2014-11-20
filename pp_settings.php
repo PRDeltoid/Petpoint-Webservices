@@ -12,6 +12,7 @@ function pp_register_settings() {
 	register_setting( 'pp-settings-group', 'view_animal_page' );
 	register_setting( 'pp-settings-group', 'view_dogs_page' );
 	register_setting( 'pp-settings-group', 'view_cats_page' );
+	register_setting( 'pp-settings-group', 'view_other_page' );
 	register_setting( 'pp-settings-group', 'pp_auth_key' );
     
 }
@@ -43,6 +44,10 @@ function pp_settings_page() {
         <tr valign="top">
         <th scope="row">URL of Adoptable Cats page</th>
         <td><input type="text" name="view_cats_page" value="<?php echo esc_attr( get_option('view_cats_page') ); ?>" /></td>
+        </tr>
+        <tr valign="top">
+        <th scope="row">URL of Adoptable Small Animals page</th>
+        <td><input type="text" name="view_other_page" value="<?php echo esc_attr( get_option('view_other_page') ); ?>" /></td>
         </tr>
     </table>
     
