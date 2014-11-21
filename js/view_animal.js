@@ -13,8 +13,9 @@ function view_animal(animal_id, plugin_base, page_urls)
     //Assigns the data pulled from the configs function to it's own variable.
     var output_fields = request_data.output_fields;
     var be_descriptions = request_data.be_descriptions;
+    var species_type = get_species(animal_details['Species']);
 
-    generate_back_button(animal_details['Species'], page_urls, output_area); //Generate the Back to Dogs/Cats link
+    generate_back_button(species_type, page_urls, output_area); //Generate the Back to Dogs/Cats link
 
     setup_photo(output_area, animal_details); //Create the animal's picture element.
 
@@ -60,6 +61,9 @@ function generate_back_button(animal_species, page_urls, output_area) {
         var back_button_url = page_urls.dogs;
     } else if(animal_species == 'Cat') {
         var back_button_url = page_urls.cats;
+    } else if(animal_species == 'Other') {
+        animal_species = "Other Animal";
+        var back_button_url = page_urls.other;
     }
 
     //Create a back button and insert it before the output_area node. 
@@ -232,3 +236,10 @@ function format_be(be_result) {
     return "<span style='font-weight:bold; color: " + be_result + "'>" + be_result + "</span>   <sup title=''><a href='#'>What is this?</a></sup>";
 }
 
+function get_species(species) {
+    if(species != "Dog" || !species != "Cat") {
+        return "Other";
+    } else {
+        return species;
+    }
+}

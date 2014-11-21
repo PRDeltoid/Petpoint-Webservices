@@ -51,6 +51,7 @@ function pp_setup_view_adoptable_page() {
 }
 
 function pp_echo_script_styles($requestURL) {
+    global $plugin_base;
     $view_animal_link = get_option('view_animal_page');
     $theme_color = get_option('pp_theme_color');
 
@@ -74,7 +75,7 @@ function pp_setup_view_animal_page_footer() {
         $animalid = get_query_var('animalid');
         if(!empty($animalid) ) {
             echo '<script>
-                    window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '", {cats:"' . get_option('view_cats_page') . '", dogs: "' . get_option('view_dogs_page') . '"})
+                    window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '", {cats:"' . get_option('view_cats_page') . '", dogs: "' . get_option('view_dogs_page') . '", other: "' . get_option('view_other_page') . '"})
                 </script>
                 <style> 
                     .view-animal-picture {
