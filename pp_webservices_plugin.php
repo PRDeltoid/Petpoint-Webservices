@@ -37,32 +37,50 @@ function enqueue_all_styles() {
 function pp_setup_view_adoptable_page() {
     global $plugin_base;
 
-    $view_animal_link = get_option('view_animal_page');
 
     if (is_page(url_to_postid(get_option('view_cats_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=cat';
-         echo '<script type="text/javascript">
-                    window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name, "sort_by_name", "' . $plugin_base . '")
-                </script>';
+         pp_echo_script_styles($requestURL);
     } else if(is_page(url_to_postid(get_option('view_dogs_page')))) {
          $requestURL = $plugin_base . '/pullanimals.php?type=dog';
-         echo '<script type="text/javascript">
-                     window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name, "sort_by_name", "' . $plugin_base . '");
-                </script>';
+         pp_echo_script_styles($requestURL);
     } else if(is_page(url_to_postid(get_option('view_other_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=other';
-         echo '<script type="text/javascript">
-                     window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name, "sort_by_name", "' . $plugin_base . '");
-                </script>';
+         pp_echo_script_styles($requestURL);
     }
+}
+
+function pp_echo_script_styles($requestURL) {
+    $view_animal_link = get_option('view_animal_page');
+    $theme_color = get_option('pp_theme_color');
+
+    echo '<script type="text/javascript">
+    window.onload = pull_animals("' . $view_animal_link . '","' . $requestURL . '", sort_by_name, "sort_by_name", "' . $plugin_base . '")
+    </script>
+    <style>
+   
+    .animal-picture {
+        border: 3px solid #' . $theme_color . ';
+        background-color: #' . $theme_color . ';
+    }
+    </style>';
 }
 
 function pp_setup_view_animal_page_footer() {
     global $plugin_base;
+    $theme_color = get_option('pp_theme_color');
+
     if(is_page(url_to_postid(get_option('view_animal_page'))))  {
         $animalid = get_query_var('animalid');
         if(!empty($animalid) ) {
-            echo '<script>window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '", {cats:"' . get_option('view_cats_page') . '", dogs: "' . get_option('view_dogs_page') . '"})</script>';
+            echo '<script>
+                    window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '", {cats:"' . get_option('view_cats_page') . '", dogs: "' . get_option('view_dogs_page') . '"})
+                </script>
+                <style> 
+                    .view-animal-picture {
+                        border: 3px solid #' . $theme_color . ';
+                    }
+                </style>';
         }
     }
 }
