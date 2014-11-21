@@ -83,10 +83,12 @@ function generate_fields(output_fields, animal_details, output_area) {
                 animal_details[field_object.field_name] = format_field(field_object, animal_details[field_object.field_name]);
             }
 
-            create_html_node('tr', null, animal_detail_node, [
-                create_html_node('td', null, null, null, "<b>" + field_object.title + "</b>"),
-                create_html_node('td', null, null, null, animal_details[field_object.field_name])  
-            ]);
+            if(animal_details[field_object.field_name] != '') {
+                create_html_node('tr', null, animal_detail_node, [
+                    create_html_node('td', null, null, null, "<b>" + field_object.title + "</b>"),
+                    create_html_node('td', null, null, null, animal_details[field_object.field_name])  
+                ]);
+            }
         }
     });
 }
