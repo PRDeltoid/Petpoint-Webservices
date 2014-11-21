@@ -15,6 +15,9 @@ function pp_register_settings() {
 	register_setting( 'pp-settings-group', 'view_other_page' );
 	register_setting( 'pp-settings-group', 'pp_auth_key' );
 	register_setting( 'pp-settings-group', 'pp_theme_color' );
+	register_setting( 'pp-settings-group', 'dog_room_list' );
+	register_setting( 'pp-settings-group', 'cat_room_list' );
+	register_setting( 'pp-settings-group', 'other_room_list' );
 }
 
 function pp_settings_page() {
@@ -48,6 +51,19 @@ function pp_settings_page() {
 
         <th scope="row">URL of View Animals page</th>
         <td><input type="text" name="view_animal_page" value="<?php echo esc_attr( get_option('view_animal_page') ); ?>" /></td>
+        </tr>
+
+        <tr valign="top">
+        <th scope="row">Dog Rooms (Comma Seperated List)</th>
+        <td><input type="text" name="dog_room_list" value="<?php echo esc_attr( get_option('dog_room_list') ); ?>" /></td>
+
+        <th scope="row">Cat Rooms (Comma Seperated List)</th>
+        <td><input type="text" name="cat_room_list" value="<?php echo esc_attr( get_option('cat_room_list') ); ?>" /></td>
+        </tr>
+
+        <tr valign="top">
+        <th scope="row">Other Animal Rooms (Comma Seperated List)</th>
+        <td><input type="text" name="other_room_list" value="<?php echo esc_attr( get_option('other_room_list') ); ?>" /></td>
         </tr>
     </table>
     

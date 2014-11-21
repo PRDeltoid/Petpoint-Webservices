@@ -37,7 +37,6 @@ function enqueue_all_styles() {
 function pp_setup_view_adoptable_page() {
     global $plugin_base;
 
-
     if (is_page(url_to_postid(get_option('view_cats_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=cat';
          pp_echo_script_styles($requestURL);
@@ -75,7 +74,9 @@ function pp_setup_view_animal_page_footer() {
         $animalid = get_query_var('animalid');
         if(!empty($animalid) ) {
             echo '<script>
-                    window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '", {cats:"' . get_option('view_cats_page') . '", dogs: "' . get_option('view_dogs_page') . '", other: "' . get_option('view_other_page') . '"})
+                window.onload = view_animal(' . $animalid . ',"' .  $plugin_base . '", {cats:"' . get_option('view_cats_page') . '", 
+                                                                                        dogs: "' . get_option('view_dogs_page') . '", 
+                                                                                        other: "' . get_option('view_other_page') . '"})
                 </script>
                 <style> 
                     .view-animal-picture {
