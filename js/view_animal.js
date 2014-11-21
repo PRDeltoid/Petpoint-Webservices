@@ -239,7 +239,7 @@ function format_be(be_result) {
 }
 
 function get_species(species) {
-    if(species != "Dog" || !species != "Cat") {
+    if(species != "Dog" && species != "Cat") {
         return "Other";
     } else {
         return species;
