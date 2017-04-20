@@ -43,7 +43,7 @@ function echo_json($room_list) {
     foreach($room_array as $room_string) {
         $room_string = trim($room_string);
         $room_string = preg_replace('/\s+/', '%20', $room_string);
-        $xml_temp_string = file_get_contents('http://www.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=0&sex=A&ageGroup=ALL&location=' . $room_string . '&site=Adoptions&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
+        $xml_temp_string = file_get_contents('http://ws.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=0&sex=A&ageGroup=ALL&location=' . $room_string . '&site=Adoptions&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
         $xml_temp = simplexml_load_string($xml_temp_string);
         $json_temp = json_encode($xml_temp);
         $json_temp_decode = json_decode($json_temp, true);
