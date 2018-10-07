@@ -1,3 +1,10 @@
+## THIS PLUGIN IS PROVIDED AS-IS, WITH NO WARRANTY. THIS PLUGIN AND ITS AUTHOR ARE NOT ASSOCIATED WITH OR EMPLOYEED BY PETHEALTH INC, OWNERS OF THE PETPOINT SOFTWARE OR THE WORDPRESS FOUNDATION. USE AT YOUR OWN RISK.
+
+That being said, this program cannot edit any information in your PetPoint database, it can only READ information. You can find out more about PetPoint Webservices and what kind of information can be pulled from this link: http://ws.petango.com/webservices/wsAdoption.asmx.
+
+10-7-2018:
+Issues have been reported for HTTPS enabled sites. A fix is currently in the works.
+
 ### Install: 
 * Click **Plugins**
 * Click **Add New near** the top. 
