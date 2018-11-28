@@ -40,13 +40,13 @@ function pp_enqueue_styles() {
 function pp_setup_view_adoptable_page() {
     global $plugin_base;
 
-    if (is_page(url_to_postid(get_option('view_cats_page')))) {
+    if (get_option('view_cats_page') != false && is_page(url_to_postid(get_option('view_cats_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=cat';
          pp_echo_script_styles($requestURL);
-    } else if(is_page(url_to_postid(get_option('view_dogs_page')))) {
+    } else if(get_option('view_dogs_page') != false && is_page(url_to_postid(get_option('view_dogs_page')))) {
          $requestURL = $plugin_base . '/pullanimals.php?type=dog';
          pp_echo_script_styles($requestURL);
-    } else if(is_page(url_to_postid(get_option('view_other_page')))) {
+    } else if(get_option('view_other_page') != false && is_page(url_to_postid(get_option('view_other_page')))) {
         $requestURL = $plugin_base . '/pullanimals.php?type=other';
          pp_echo_script_styles($requestURL);
     }
@@ -73,7 +73,7 @@ function pp_setup_view_animal_page_footer() {
     global $plugin_base;
     $theme_color = get_option('pp_theme_color');
 
-    if(is_page(url_to_postid(get_option('view_animal_page'))))  {
+    if(get_option('view_animal_page') != false && is_page(url_to_postid(get_option('view_animal_page'))))  {
         $animalid = get_query_var('animalid');
         if(!empty($animalid) ) {
             echo '<script>
