@@ -15,16 +15,16 @@ $plugin_base = plugins_url(null, __FILE__);
 function pp_enqueue_scripts() {
     global $plugin_base;
 
-    if (is_page(url_to_postid(get_option('view_cats_page'))) || 
-        is_page(url_to_postid(get_option('view_dogs_page'))) || 
-        is_page(url_to_postid(get_option('view_other_page')))) {
-
+    if ((get_option('view_cats_page') != false && is_page(url_to_postid(get_option('view_cats_page')))) || 
+        (get_option('view_dogs_page') != false && is_page(url_to_postid(get_option('view_dogs_page')))) || 
+        (get_option('view_other_page') != false && is_page(url_to_postid(get_option('view_other_page'))))) {
+		
         wp_enqueue_script('pull-animals', $plugin_base . '/js/pull_animals.js', 
             array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-tooltip'));
     }
-    if(is_page(url_to_postid(get_option('view_animal_page'))))  {
+    if(get_option('view_animal_page') != false && is_page(url_to_postid(get_option('view_animal_page'))))  {
         wp_enqueue_script('view-animal', $plugin_base . '/js/view_animal.js', 
-            array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-tooltip'));
+            array('pp-jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-tooltip'));
     }
 }
 
