@@ -97,6 +97,15 @@ function pp_add_rewrite() {
     add_rewrite_rule($url_path . '([0-9]{1,})/?', 'index.php?page_id=' . $animal_page_id . '&animalid=$matches[1]', 'top');
 }
 
+
+function pp_add_settings_link( $links ) {
+    $settings_link = '<a href="options-general.php?page=pp-plugin-settings">' . __( 'Settings' ) . '</a>';
+    array_unshift( $links, $settings_link );
+  	return $links;
+}
+$plugin = plugin_basename( __FILE__ );
+add_filter( "plugin_action_links_$plugin", 'pp_add_settings_link' );
+
 function pp_add_query_vars_filter( $vars ){
   $vars[] = "animalid";
   return $vars;
