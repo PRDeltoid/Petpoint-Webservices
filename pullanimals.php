@@ -39,6 +39,14 @@ function echo_json($room_list) {
     $room_array = explode(',', $room_list);
     $json_array = array();
 
+    # Prevent file_get_contents from breaking over an OpenSSL HTTPS connection
+	$arrContextOptions=array(
+		"ssl"=>array(
+			"verify_peer"=>false,
+			"verify_peer_name"=>false,
+		),
+	);
+
     #Cycle through each room in the list, and pull the animal data for that room.
     foreach($room_array as $room_string) {
         $room_string = trim($room_string);
