@@ -2,6 +2,8 @@
 
 That being said, this program cannot edit any information in your PetPoint database, it can only READ information. You can find out more about PetPoint Webservices and what kind of information can be pulled from this link: http://ws.petango.com/webservices/wsAdoption.asmx.
 
+If you just need a simple way to display adoptable animal information on your site, I suggest the use of the Adoptable Search I-Frame found [here](https://www.petpoint.com/downloads/Adoptable_Search_I-frame.pdf). The Adoptable Search I-Frame is provided directly by PetPoint and the results can be customized using CSS. This plugin is meant to provide advanced functionality such as filtering, sorting and displaying more animal details. If you do not need these advanced features, you will have a much easier time using the Adoptable Search I-Frame. If you have a web developer as an employee or volunteer, ask them about possiblity of writing some custom CSS to make the I-Frame match your site better!
+
 10-7-2018:
 Issues have been reported for HTTPS enabled sites. A fix is currently in the works.
 
