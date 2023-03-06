@@ -27,6 +27,11 @@
     height: 400px;
 }
 
+.view-animal-video {
+  width: 480px;
+  height: 270px;
+}
+
 .animal-picture {
     width: 175px !important;
     height: 175px !important;
