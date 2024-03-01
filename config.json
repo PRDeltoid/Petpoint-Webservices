@@ -6,8 +6,7 @@
         {"title": "Sex",          "field_name": "Sex"},
         {"title": "Weight",       "field_name": "BodyWeight"},
         {"title": "Location",     "field_name": "Location"},
-        {"title": "Description",  "field_name": "Dsc",             "type": "description"},
-        {"title": "BE Color",     "field_name": "BehaviorResult",   "type": "be"}
+        {"title": "Description",  "field_name": "Dsc",             "type": "description"}
     ],
     "be_descriptions": { 
         "green_be": "This animal needs training or has special needs. Should go to an adult and dog savvy home.",
