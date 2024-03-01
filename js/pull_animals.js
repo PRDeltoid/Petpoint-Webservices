@@ -41,8 +41,6 @@ function request_configs(request_data, callback) {
 
 function create_animal_detail(animal, view_animal_url) {
 
-    var animal = animal.adoptableSearch; //Sets the animal variable to be easier to read. 
-
     var animal_be = animal.BehaviorResult;
 
     var animal_species = animal.Species;
@@ -79,7 +77,7 @@ function create_animal_detail(animal, view_animal_url) {
 }
 
 function get_animal_type(results) {
-    return results[0].adoptableSearch.AnimalType;
+    return results[0].AnimalType;
 }
 
 function render_animals_html(results, output_area, view_animal_url) {
@@ -233,17 +231,17 @@ function format_name(name) {
 
 var sort_by_name = function(a, b) {
     this.name = "sort_by_name";
-    if(a["adoptableSearch"].Name < b["adoptableSearch"].Name) {
+    if(a.Name < b.Name) {
         return -1;
-    } else if(a["adoptableSearch"].Name > b["adoptableSearch"].Name) {
+    } else if(a.Name > b.Name) {
         return 1;
     }
     return 0;
 }
 
 var sort_by_age = function(a, b) {
-    var age_a = parseInt(a["adoptableSearch"].Age);
-    var age_b = parseInt(b["adoptableSearch"].Age);
+    var age_a = parseInt(a.Age);
+    var age_b = parseInt(b.Age);
     if(age_a < age_b) {
         return -1;
     } else if(age_a > age_b) {
@@ -252,9 +250,9 @@ var sort_by_age = function(a, b) {
 }
 
 var sort_by_breed = function(a, b) {
-    if(a["adoptableSearch"].PrimaryBreed < b["adoptableSearch"].PrimaryBreed) {
+    if(a.PrimaryBreed < b.PrimaryBreed) {
         return -1;
-    } else if(a["adoptableSearch"].PrimaryBreed > b["adoptableSearch"].PrimaryBreed) {
+    } else if(a.PrimaryBreed > b.PrimaryBreed) {
         return 1;
     }
 }

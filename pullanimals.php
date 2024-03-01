@@ -38,35 +38,35 @@ function test_for_empty_object($object) {
 function echo_json($room_list) {
     #Split the list into an array
     $room_array = explode(',', $room_list);
-    $json_array = array();
 
-    # Prevent file_get_contents from breaking over an OpenSSL HTTPS connection
-	$arrContextOptions=array(
-		"ssl"=>array(
-			"verify_peer"=>false,
-			"verify_peer_name"=>false,
-		),
-	);
+    #Initialize an empty array to store JSON data
+    $json_array = [];
 
-    #Cycle through each room in the list, and pull the animal data for that room.
     foreach($room_array as $room_string) {
         $room_string = trim($room_string);
         $room_string = preg_replace('/\s+/', '%20', $room_string);
-        $xml_temp_string = file_get_contents('http://ws.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=0&sex=A&ageGroup=ALL&location=' . $room_string . '&site=Adoptions&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=0');
-        $xml_temp = simplexml_load_string($xml_temp_string);
-        $json_temp = json_encode($xml_temp);
-        $json_temp_decode = json_decode($json_temp, true);
-        $json_array[] = $json_temp_decode;
-    }
 
-    #Cycle through each JSON object, and merge it together into one mega-JSON object
-    $merged_array = array();
-    foreach($json_array as $json) {
-        $merged_array = array_merge($merged_array, $json["XmlNode"]);
-        $merged_array = array_filter($merged_array, "test_for_empty_object");
+        $xml_string = file_get_contents('http://ws.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=0&sex=A&ageGroup=ALL&location=' . $room_string . '&site=&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=');
+        $xml = simplexml_load_string($xml_string);
+
+        #Loop through each XmlNode
+        foreach ($xml->XmlNode as $node) {
+            #Skip nil nodes
+            if ($node->attributes('xsi', true)->nil == 'true') {
+                continue; 
+            }
+            $data = [];
+            
+            #Get child elements of adoptableSearch objects (the animals)
+            foreach ($node->adoptableSearch->children() as $child) {
+                $data[$child->getName()] = strval($child); #Convert SimpleXMLElement to string
+            }
+            #Append data to json_array array
+            $json_array[] = $data;
+        }
     }
      
     #encode and return the mega-object
-    echo json_encode($merged_array);
+    echo json_encode($json_array);
 }
 ?>
