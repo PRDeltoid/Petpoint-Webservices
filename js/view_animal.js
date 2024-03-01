@@ -134,6 +134,9 @@ function load_photo(photo_url) {
     var image_element = jQuery('#animal-picture');
     var loading_spinner = jQuery('.loading');
     image_element.attr('src', photo_url);
+    //Hide video element and show image element
+    jQuery('#animal-video').attr('style', 'display: none');
+    image_element.attr('style', 'display: block');
     image_element.each(function() {
        if(!this.complete) { //Check if image is cached, run animation if it's not.
             image_element.css('opacity', 0.3); //Dim the background image
@@ -146,6 +149,15 @@ function load_photo(photo_url) {
     });
 }
 
+//Add function to load YouTube embed for video
+function load_video(video_id) {
+    var video_element = jQuery('#animal-video');
+    video_element.attr('src', 'https://www.youtube-nocookie.com/embed/'+video_id);
+    //Hide image element and show video element
+    jQuery('#animal-picture').attr('style', 'display: none');
+    video_element.attr('style', 'display: block');
+}
+
 function setup_photo(output_area, animal_details) {
     var animal_picture_container_node = 
             create_html_node('div', [ {name:'class',  value: 'animal-picture-container'} ], output_area, [
@@ -153,6 +165,15 @@ function setup_photo(output_area, animal_details) {
                 create_html_node('img', [ {name: 'class', value: 'view-animal-picture'},
                                           {name: 'id',    value: 'animal-picture'},
                                           {name: 'src',   value: animal_details['Photo1']}]),
+                //Add YouTube embed iframe which is hidden by default. The attributes from width on are from the generated html embed, and might need to be adjusted.
+                create_html_node('iframe', [ {name: 'class', value: 'view-animal-video'},
+                                             {name: 'id', value: 'animal-video'},
+                                             {name: 'style', value: 'display: none'},
+                                             {name: 'width', value: '480'},
+                                             {name: 'height', value: '270'},
+                                             {name: 'title', value: 'YouTube video player'},
+                                             {name: 'frameborder', value: '0'},
+                                             {name: 'allow', value: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'}]),
                 create_html_node('div', [ {name: 'id', value: 'photo-links'} ]) 
             ]);
 
@@ -165,6 +186,9 @@ function setup_photo_links(animal_details) {
     //Count the number of photo entries (Regex catches all Photo nodes with a link inside them, if it has no link, then it's a blank photo)
     var photo_regex = /"Photo[1-9]{1}":"http[s]?/g;
     var num_of_photos = JSON.stringify(animal_details).match(photo_regex).length;
+
+    //Get video id if it exists for YouTube video embed
+    var video_id = animal_details['VideoID'];
 
     //Create a button node for each picture, and add an event listener to fire when that button is clicked. 
      for(i=0; i<num_of_photos; i++) {
@@ -181,9 +205,27 @@ function setup_photo_links(animal_details) {
             jQuery('#photo1').addClass('active');
         }
 
-        //Finally, add an event listener to switch to the picture when it's button is clicked (using load_photo).
+        //Finally, add an event listener to switch to the picture when its button is clicked (using load_photo).
         picture_element.addEventListener("click", load_photo.bind(null, photo_url));
         jQuery('#photo'+photo_num).click(function() {
+            jQuery('.active').removeClass('active');
+            jQuery(this).addClass('active');
+        });
+    }
+
+    //Create a button node for the video, if it exists, and add an event listener to fire when that button is clicked.
+    if (video_id) {
+        //Use the last photo_num to put video at the end of the photos
+        var video_position = photo_num+1;
+        var video_element = create_html_node('input', [ {name: 'type', value: 'button'},
+                                            {name: 'id', value: 'video'},
+                                            {name: 'class', value: 'photo-btb btn btn-primary btn-sm'},
+                                            {name: 'value', value: video_position}],
+                                        photo_output_area);
+        
+        //Finally, add an event listener to switch to the video when its button is clicked (using load_video).
+        video_element.addEventListener("click", load_video.bind(null, video_id));
+        jQuery('#video').click(function() {
             jQuery('.active').removeClass('active');
             jQuery(this).addClass('active');
         });
