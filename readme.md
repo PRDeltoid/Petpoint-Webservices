@@ -10,9 +10,6 @@ That being said, this program cannot edit any information in your PetPoint datab
 
 If you just need a simple way to display adoptable animal information on your site, I suggest the use of the Adoptable Search I-Frame found [here](https://www.petpoint.com/downloads/Adoptable_Search_I-frame.pdf). The Adoptable Search I-Frame is provided directly by PetPoint and the results can be customized using CSS. This plugin is meant to provide advanced functionality such as filtering, sorting and displaying more animal details. If you do not need these advanced features, you will have a much easier time using the Adoptable Search I-Frame. If you have a web developer as an employee or volunteer, ask them about possiblity of writing some custom CSS to make the I-Frame match your site better!
 
-10-7-2018:
-Issues have been reported for HTTPS enabled sites. A fix is currently in the works.
-
 ### Install: 
 * Click **Plugins**
 * Click **Add New near** the top. 
