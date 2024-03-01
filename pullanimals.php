@@ -1,4 +1,12 @@
 <?php
+    enum Species: int
+    {
+        case Dogs = 1;
+        case Cats = 2;
+        case All = 0;
+        case NotDogOrCat = 1003;
+    }
+
     define('WP_USE_THEMES', false);
     require('../../../wp-blog-header.php');
     if(!isset($_GET)) {
@@ -6,19 +14,18 @@
     } else {
         if(isset($_GET['type'])) {
             header('HTTP/1.1 200 OK');
-            $type = $_GET['type'];
             if($_GET['type']=="dog") {         #Pull all animals located in dog rooms  
                 header('Content-type: application/json');
                 $room_list = get_option("dog_room_list");
-                echo_json($room_list);
+                echo_json($room_list, Species::Dog);
             } else if($_GET['type']=="cat") {  #Pull all animals located in cat rooms 
                 header('Content-type: application/json');
                 $room_list = get_option("cat_room_list");
-                echo_json($room_list);
+                echo_json($room_list, Species::Cats);
             } else if($_GET['type']=="other") { #Pull all animals located in small animal rooms 
                 header('Content-type: application/json');
                 $room_list = get_option("other_room_list");
-                echo_json($room_list);
+                echo_json($room_list, Species::NotDogOrCat);
             } else {
                 echo "Unknown type set";
             }
@@ -35,7 +42,7 @@ function test_for_empty_object($object) {
     }
 }
 
-function echo_json($room_list) {
+function echo_json($room_list, $species) {
     #Split the list into an array
     $room_array = explode(',', $room_list);
 
@@ -46,7 +53,7 @@ function echo_json($room_list) {
         $room_string = trim($room_string);
         $room_string = preg_replace('/\s+/', '%20', $room_string);
 
-        $xml_string = file_get_contents('http://ws.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=0&sex=A&ageGroup=ALL&location=' . $room_string . '&site=&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=');
+        $xml_string = file_get_contents('http://ws.petango.com/webservices/wsadoption.asmx/AdoptableSearch?authkey=' . get_option("pp_auth_key") . '&speciesID=' . $species->value . '&sex=A&ageGroup=ALL&location=' . $room_string . '&site=&onHold=A&orderBy=ID&primaryBreed=All&secondaryBreed=All&specialNeeds=A&noDogs=A&noCats=A&noKids=A&stageid=');
         $xml = simplexml_load_string($xml_string);
 
         #Loop through each XmlNode
