@@ -24,7 +24,7 @@ function pp_enqueue_scripts() {
     }
     if(get_option('view_animal_page') != false && is_page(url_to_postid(get_option('view_animal_page'))))  {
         wp_enqueue_script('view-animal', $plugin_base . '/js/view_animal.js', 
-            array('pp-jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-tooltip'));
+            array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-tooltip'));
     }
 }
 

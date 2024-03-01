@@ -5,6 +5,7 @@
         echo "Get not set";
     } else {
         if(isset($_GET['type'])) {
+            header('HTTP/1.1 200 OK');
             $type = $_GET['type'];
             if($_GET['type']=="dog") {         #Pull all animals located in dog rooms  
                 header('Content-type: application/json');

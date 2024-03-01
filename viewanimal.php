@@ -5,6 +5,7 @@
         echo "Get not set";
     } else {
         if(isset($_GET['id']) && is_numeric($_GET['id'])) {
+            header('HTTP/1.1 200 OK');
             header('Content-type: application/json');
             $xml_string = file_get_contents("http://ws.petango.com/webservices/wsadoption.asmx/AdoptableDetails?authkey=" . get_option('pp_auth_key') . "&animalID=" . $_GET['id']);
             $xml = simplexml_load_string($xml_string);
