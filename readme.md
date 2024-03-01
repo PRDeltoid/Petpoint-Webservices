@@ -1,3 +1,9 @@
+## Consider using PetPress instead
+
+Consider using [PetPress](https://wordpress.org/plugins/petpress/) instead. It is very well made and being updated regularly. I've tried it out and it provides the same functionality as this plugin but is much better looking.
+
+I will still be fixing any issues with this plugin and adding some simple features but competing with PetPress's features would require a full rewrite. I'm flattered that anyone has chosen to use a plugin I wrote for an animal shelter I worked for many years ago but If something like PetPress had existed at the time, I would have used it right away.
+
 ## THIS PLUGIN IS PROVIDED AS-IS, WITH NO WARRANTY. THIS PLUGIN AND ITS AUTHOR ARE NOT ASSOCIATED WITH OR EMPLOYEED BY PETHEALTH INC, OWNERS OF THE PETPOINT SOFTWARE OR THE WORDPRESS FOUNDATION. USE AT YOUR OWN RISK.
 
 That being said, this program cannot edit any information in your PetPoint database, it can only READ information. You can find out more about PetPoint Webservices and what kind of information can be pulled from this link: http://ws.petango.com/webservices/wsAdoption.asmx.
