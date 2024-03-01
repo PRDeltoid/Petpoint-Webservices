@@ -214,7 +214,7 @@ function setup_photo_links(animal_details) {
     }
 
     //Create a button node for the video, if it exists, and add an event listener to fire when that button is clicked.
-    if (video_id) {
+    if (typeof video_id === 'string' || video_id instanceof String) {
         //Use the last photo_num to put video at the end of the photos
         var video_position = photo_num+1;
         var video_element = create_html_node('input', [ {name: 'type', value: 'button'},
